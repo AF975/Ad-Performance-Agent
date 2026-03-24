@@ -1,6 +1,6 @@
 {
   "version": "1.0",
-  "lastUpdated": "2026-03-24T17:00:00-07:00",
+  "lastUpdated": "2026-03-24T17:30:00-07:00",
   "goals": {
     "quarter": "Q1_FY27",
     "dateRange": {
@@ -32,17 +32,17 @@
       "weekEnding": "2026-03-24",
       "reportType": "weekly",
       "portfolio": {
-        "totalSpend": 5561,
+        "totalSpend": 6479,
         "totalLeads": 20,
         "totalMQLs": 6,
-        "avgCPL": 278
+        "avgCPL": 324
       },
       "byChannel": {
         "LINKEDIN": {
-          "spend": 4576,
+          "spend": 5494,
           "leads": 20,
           "mqls": 6,
-          "cpl": 229
+          "cpl": 275
         },
         "GOOGLE_ADS": {
           "spend": 985,
@@ -83,18 +83,22 @@
           "mqlRate": 100
         },
         {
-          "name": "Pulsar WP → Enterprise v6",
-          "experimentId": 1793272,
-          "cpl": 76,
+          "name": "Agentic Ops WP → Higher Ed Facilities",
+          "experimentId": 1793310,
+          "cpl": 163,
           "leads": 1,
-          "mqls": 0,
-          "mqlRate": 0
+          "mqls": 1,
+          "mqlRate": 100
         }
       ],
       "watchList": [
         {
           "name": "Google Ads Education (Paused)",
-          "issue": "$985 spend, 0 leads, campaigns paused"
+          "issue": "$985 spend, 0 leads, all campaigns paused"
+        },
+        {
+          "name": "Demo CTO Gap",
+          "issue": "0 campaigns running, 8/18 MQL target uncovered"
         },
         {
           "name": "Five Tenets → Higher Ed Facilities REC",
@@ -133,6 +137,24 @@
       "action": "Credit balance DENIED flagged",
       "reason": "Metadata Pixel AI credits showing 0 remaining, DENIED status. May impact campaign delivery.",
       "outcome": "pending"
+    },
+    {
+      "date": "2026-03-24",
+      "action": "15 new experiments detected",
+      "reason": "10 White Paper + 5 BTB Webinar experiments launched Mar 16 across Enterprise, Education, and SFDC audiences. Webinar experiments address previously flagged CTA gap. Total new spend: $918.",
+      "outcome": "done"
+    },
+    {
+      "date": "2026-03-24",
+      "action": "Blueprint experiments flagged as top performers",
+      "reason": "Blueprint WP experiments delivering $50-67 CPL with 33-100% MQL rates, 3x better than portfolio average. Recommended for budget increase.",
+      "outcome": "done"
+    },
+    {
+      "date": "2026-03-24",
+      "action": "Goal pacing assessed as BEHIND",
+      "reason": "6/18 MQLs (33%) at 59% of quarter. LinkedIn on track (6/9), Google at risk (0/9). Projected EOQ: 10 MQLs without intervention.",
+      "outcome": "done"
     }
   ],
   "alertHistory": [
@@ -149,7 +171,7 @@
       "date": "2026-03-24",
       "type": "cta_gap",
       "entity": "webinar_on_demand_view",
-      "message": "No Webinar On Demand campaigns running. 6/18 MQL target has zero coverage.",
+      "message": "Webinar CTA gap partially addressed: 5 BTB Webinar experiments launched Mar 16 but 0 leads so far.",
       "acknowledged": false
     },
     {
@@ -247,6 +269,237 @@
         "lifetimeLeads": 2,
         "lifetimeMQLs": 0,
         "lastWeekCPL": 214
+      },
+      "1785666": {
+        "name": "Agentic WP → Higher Ed Facilities REC",
+        "firstSeen": "2026-03-24",
+        "channel": "LINKEDIN",
+        "status": "Paused",
+        "cta": "white_paper_download",
+        "lifetimeSpend": 307,
+        "lifetimeLeads": 1,
+        "lifetimeMQLs": 1,
+        "lastWeekCPL": 307
+      },
+      "1785662": {
+        "name": "Agentic WP → Enterprise G2000 REC",
+        "firstSeen": "2026-03-24",
+        "channel": "LINKEDIN",
+        "status": "Paused",
+        "cta": "white_paper_download",
+        "lifetimeSpend": 482,
+        "lifetimeLeads": 1,
+        "lifetimeMQLs": 0,
+        "lastWeekCPL": 482
+      },
+      "1785651": {
+        "name": "Five Tenets → Higher Ed Facilities SQ",
+        "firstSeen": "2026-03-24",
+        "channel": "LINKEDIN",
+        "status": "Paused",
+        "cta": "white_paper_download",
+        "lifetimeSpend": 369,
+        "lifetimeLeads": 1,
+        "lifetimeMQLs": 0,
+        "lastWeekCPL": 369
+      },
+      "1785647": {
+        "name": "Five Tenets → Enterprise G2000 SQ",
+        "firstSeen": "2026-03-24",
+        "channel": "LINKEDIN",
+        "status": "Paused",
+        "cta": "white_paper_download",
+        "lifetimeSpend": 445,
+        "lifetimeLeads": 1,
+        "lifetimeMQLs": 0,
+        "lastWeekCPL": 445
+      },
+      "1781819": {
+        "name": "Agentic WP LP → Higher Ed Facilities",
+        "firstSeen": "2026-03-24",
+        "channel": "LINKEDIN",
+        "status": "Paused",
+        "cta": "white_paper_download",
+        "lifetimeSpend": 685,
+        "lifetimeLeads": 2,
+        "lifetimeMQLs": 0,
+        "lastWeekCPL": 342
+      },
+      "1781814": {
+        "name": "Five Tenets LP → Campus Police",
+        "firstSeen": "2026-03-24",
+        "channel": "LINKEDIN",
+        "status": "Paused",
+        "cta": "white_paper_download",
+        "lifetimeSpend": 510,
+        "lifetimeLeads": 1,
+        "lifetimeMQLs": 0,
+        "lastWeekCPL": 510
+      },
+      "1793317": {
+        "name": "BTB Webinar → Enterprise v6",
+        "firstSeen": "2026-03-24",
+        "channel": "LINKEDIN",
+        "status": "Active",
+        "cta": "webinar_on_demand_view",
+        "lifetimeSpend": 85,
+        "lifetimeLeads": 0,
+        "lifetimeMQLs": 0,
+        "lastWeekCPL": null
+      },
+      "1793296": {
+        "name": "BTB Webinar → SFDC Prospects v2",
+        "firstSeen": "2026-03-24",
+        "channel": "LINKEDIN",
+        "status": "Active",
+        "cta": "webinar_on_demand_view",
+        "lifetimeSpend": 21,
+        "lifetimeLeads": 0,
+        "lifetimeMQLs": 0,
+        "lastWeekCPL": null
+      },
+      "1793295": {
+        "name": "BTB Webinar → Enterprise v6 v2",
+        "firstSeen": "2026-03-24",
+        "channel": "LINKEDIN",
+        "status": "Active",
+        "cta": "webinar_on_demand_view",
+        "lifetimeSpend": 87,
+        "lifetimeLeads": 0,
+        "lifetimeMQLs": 0,
+        "lastWeekCPL": null
+      },
+      "1793293": {
+        "name": "BTB Webinar → Enterprise v6 v1",
+        "firstSeen": "2026-03-24",
+        "channel": "LINKEDIN",
+        "status": "Active",
+        "cta": "webinar_on_demand_view",
+        "lifetimeSpend": 48,
+        "lifetimeLeads": 0,
+        "lifetimeMQLs": 0,
+        "lastWeekCPL": null
+      },
+      "1793239": {
+        "name": "BTB Webinar → SFDC Prospects",
+        "firstSeen": "2026-03-24",
+        "channel": "LINKEDIN",
+        "status": "Active",
+        "cta": "webinar_on_demand_view",
+        "lifetimeSpend": 35,
+        "lifetimeLeads": 0,
+        "lifetimeMQLs": 0,
+        "lastWeekCPL": null
+      },
+      "1793314": {
+        "name": "Agentic Ops WP → Higher Ed Facilities v2",
+        "firstSeen": "2026-03-24",
+        "channel": "LINKEDIN",
+        "status": "Active",
+        "cta": "white_paper_download",
+        "lifetimeSpend": 44,
+        "lifetimeLeads": 0,
+        "lifetimeMQLs": 0,
+        "lastWeekCPL": null
+      },
+      "1793313": {
+        "name": "Agentic Ops WP → Campus Police v2",
+        "firstSeen": "2026-03-24",
+        "channel": "LINKEDIN",
+        "status": "Active",
+        "cta": "white_paper_download",
+        "lifetimeSpend": 139,
+        "lifetimeLeads": 0,
+        "lifetimeMQLs": 0,
+        "lastWeekCPL": null
+      },
+      "1793312": {
+        "name": "Agentic Ops WP → Higher Ed Facilities v3",
+        "firstSeen": "2026-03-24",
+        "channel": "LINKEDIN",
+        "status": "Active",
+        "cta": "white_paper_download",
+        "lifetimeSpend": 90,
+        "lifetimeLeads": 0,
+        "lifetimeMQLs": 0,
+        "lastWeekCPL": null
+      },
+      "1793308": {
+        "name": "Pulsar WP → Higher Ed Facilities",
+        "firstSeen": "2026-03-24",
+        "channel": "LINKEDIN",
+        "status": "Active",
+        "cta": "white_paper_download",
+        "lifetimeSpend": 36,
+        "lifetimeLeads": 0,
+        "lifetimeMQLs": 0,
+        "lastWeekCPL": null
+      },
+      "1793304": {
+        "name": "Pulsar WP → Campus Police",
+        "firstSeen": "2026-03-24",
+        "channel": "LINKEDIN",
+        "status": "Active",
+        "cta": "white_paper_download",
+        "lifetimeSpend": 105,
+        "lifetimeLeads": 0,
+        "lifetimeMQLs": 0,
+        "lastWeekCPL": null
+      },
+      "1793300": {
+        "name": "Blueprint WP → Enterprise v6 v2",
+        "firstSeen": "2026-03-24",
+        "channel": "LINKEDIN",
+        "status": "Active",
+        "cta": "white_paper_download",
+        "lifetimeSpend": 40,
+        "lifetimeLeads": 0,
+        "lifetimeMQLs": 0,
+        "lastWeekCPL": null
+      },
+      "1793289": {
+        "name": "Agentic Ops WP → Enterprise v6 rect",
+        "firstSeen": "2026-03-24",
+        "channel": "LINKEDIN",
+        "status": "Active",
+        "cta": "white_paper_download",
+        "lifetimeSpend": 36,
+        "lifetimeLeads": 0,
+        "lifetimeMQLs": 0,
+        "lastWeekCPL": null
+      },
+      "1793287": {
+        "name": "Agentic Ops WP → Enterprise v6 sq",
+        "firstSeen": "2026-03-24",
+        "channel": "LINKEDIN",
+        "status": "Active",
+        "cta": "white_paper_download",
+        "lifetimeSpend": 85,
+        "lifetimeLeads": 0,
+        "lifetimeMQLs": 0,
+        "lastWeekCPL": null
+      },
+      "1793274": {
+        "name": "Pulsar WP → Enterprise v6 rect",
+        "firstSeen": "2026-03-24",
+        "channel": "LINKEDIN",
+        "status": "Active",
+        "cta": "white_paper_download",
+        "lifetimeSpend": 36,
+        "lifetimeLeads": 0,
+        "lifetimeMQLs": 0,
+        "lastWeekCPL": null
+      },
+      "1793257": {
+        "name": "Blueprint WP → Enterprise v6 rect",
+        "firstSeen": "2026-03-24",
+        "channel": "LINKEDIN",
+        "status": "Active",
+        "cta": "white_paper_download",
+        "lifetimeSpend": 28,
+        "lifetimeLeads": 0,
+        "lifetimeMQLs": 0,
+        "lastWeekCPL": null
       }
     }
   },
