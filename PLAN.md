@@ -79,29 +79,32 @@ Execute the data collection sequence once interactively to:
 ### Step 5: Create on-demand skill — `/ad-report` ✅
 Create a Claude Code skill that can be invoked manually with `/ad-report`. This is the single entry point for all report types:
 
-| Command | What it does |
-|---|---|
-| `/ad-report` | Full weekly report (Monday through today) |
-| `/ad-report month` | Monthly roll-up (last 30 days from today) |
-| `/ad-report quarter` | Quarterly report (last 90 days from today) |
-| `/ad-report anomaly check` | Mid-week anomaly check (posts only if issues found) |
-| `/ad-report linkedin only` | LinkedIn experiments only |
-| `/ad-report google only` | Google Ads keyword data only |
-| `/ad-report last 14 days` | Custom lookback window |
+| Command | What it does | Status |
+|---|---|---|
+| `/ad-report` | Full weekly report (Monday through today) | ✅ |
+| `/ad-report anomaly check` | Mid-week anomaly check (posts only if issues found) | ✅ |
+| `/ad-report 30-days` | Rolling 30-day report | ✅ |
+| `/ad-report 90-days` | Rolling 90-day report | ✅ |
+| `/ad-report Q1 FY27` | Fixed-quarter scorecard (results only, no recs) | Planned |
+| `/ad-report set-goals Q2 FY27` | Set objectives for a new quarter | Planned |
+| `/ad-report annual FY27` | Annual summary across all quarters | Planned |
+| `/ad-report linkedin only` | LinkedIn experiments only | ✅ |
+| `/ad-report google only` | Google Ads keyword data only | ✅ |
+| `/ad-report last 14 days` | Custom lookback window | ✅ |
 
 The skill runs locally, so it has access to the `.env` file and posts to Slack as Henry via the bot script.
 
 **Suggested cadence (manual):**
 - **Fridays ~4pm PT** — run `/ad-report` for the full weekly report
 - **Wednesdays ~10am PT** — run `/ad-report anomaly check` for mid-week anomaly detection
-- **End of month** — run `/ad-report month` for the monthly roll-up
-- **End of quarter** — run `/ad-report quarter` for the quarterly report
+- **End of month** — run `/ad-report 30-days` for the rolling 30-day report
+- **End of quarter** — run `/ad-report Q1 FY27` for the fixed-quarter scorecard
 
-### Step 6: Create monthly roll-up report ✅
+### Step 6: Create rolling 30-day report ✅
 
-**Trigger:** `/ad-report month` — covers the **last 30 days** from the day of invocation.
+**Trigger:** `/ad-report 30-days` (was `/ad-report month`)
 
-The monthly report provides a bigger-picture view than weekly:
+Covers the **last 30 days** from the day of invocation. Actionable, forward-looking:
 - 30-day portfolio summary with daily/weekly averages
 - Budget utilization by channel (spend split, CPL per channel)
 - Weekly trend table from snapshots within the 30-day window
@@ -117,34 +120,89 @@ The monthly report provides a bigger-picture view than weekly:
 
 **Charts:** Spend allocation (horizontal bar), weekly spend trend by channel (stacked bar), MQL progress vs target pace (line)
 
-### Step 7: Create quarterly report ✅
+### Step 7: Create rolling 90-day report ✅
 
-**Trigger:** `/ad-report quarter` — covers the **last 90 days** from the day of invocation.
+**Trigger:** `/ad-report 90-days` (was `/ad-report quarter`)
 
-The quarterly report is the most comprehensive:
-- Quarter scorecard with verdict (GOAL MET / PARTIAL / MISSED)
-- MQL attainment table by channel and CTA with percentage attainment
+Covers the **last 90 days** from the day of invocation. Actionable, forward-looking:
 - 90-day portfolio summary with monthly averages
 - Budget utilization by channel
 - Monthly trend table
 - Experiment lifecycle summary (all experiments with status, spend, leads, MQLs, CPL)
 - Top 5 performers
 - Key learnings (what worked, what didn't, audience/channel/CTA insights)
-- Strategic recommendations for next quarter (goal setting, budget, experiment strategy)
-- Decision log highlights
+- Strategic recommendations (goal setting, budget, experiment strategy)
 
-**Slack delivery:**
-Posts to both `#marketing-team` and `#ext_metadata_ambient`
+**Slack delivery:** Posts to both `#marketing-team` and `#ext_metadata_ambient`
 
 **HTML report:** Saved as `reports/quarterly/YYYY-MM-DD.html`
 **HTML template:** `templates/quarterly_report.html`
 
 **Charts:** Monthly spend by channel (stacked bar), MQL progress vs target pace (line), CTA effectiveness (grouped bar: actual vs target)
 
-### Step 8: Verify
-- Test `/ad-report` for full weekly report
+### Step 8: Create fixed-quarter scorecard (planned)
+
+**Trigger:** `/ad-report Q1 FY27` (any quarter, e.g., `Q2 FY27`, `Q3 FY26`)
+
+Retrospective report for a **specific quarter with fixed dates**. Purely results-focused — no action recommendations (the quarter is over).
+
+**Quarter calendar (fixed):**
+- Q1: Feb 1 – Apr 30
+- Q2: May 1 – Jul 31
+- Q3: Aug 1 – Oct 31
+- Q4: Nov 1 – Jan 31
+
+**Report content:**
+- Quarter scorecard with verdict (GOAL MET / PARTIAL / MISSED)
+- MQL attainment by channel and CTA (actuals vs targets, % attainment)
+- Total spend and CPL analysis
+- Campaign performance summary (all experiments with lifetime metrics)
+- Highlights and lowlights
+- Key takeaways
+- NO action recommendations (retrospective only)
+
+**Slack delivery:** Posts to both `#marketing-team` and `#ext_metadata_ambient`
+
+**HTML report:** Saved as `reports/quarterly/Q1_FY27.html`
+**HTML template:** Needs new template (`templates/quarter_scorecard.html`)
+
+### Step 9: Create set-goals command (planned)
+
+**Trigger:** `/ad-report set-goals Q2 FY27`
+
+Interactive command to set quarterly objectives. Walks the user through:
+1. Confirm quarter and date range (auto-calculated from quarter calendar)
+2. Set total MQL target
+3. Set channel split (LinkedIn vs Google)
+4. Set CTA breakdown per channel (demo_cto, white_paper_download, webinar_on_demand_view)
+
+**State file changes required:**
+- Goals become a map keyed by quarter (`Q1_FY27`, `Q2_FY27`, etc.)
+- Each quarter stores its own targets, date range, and final results
+- `currentQuarter` field indicates the active quarter
+- Historical goals preserved indefinitely
+
+### Step 10: Create annual summary (planned)
+
+**Trigger:** `/ad-report annual FY27`
+
+Year-end summary aggregating all quarters. Covers:
+- Full-year MQL attainment vs goals
+- Quarter-over-quarter trends
+- Channel and CTA effectiveness across the year
+- Top experiments of the year
+- Budget utilization and ROI
+- Strategic recommendations for next fiscal year
+
+### Step 11: Verify
+- Test `/ad-report` for full weekly report ✅
 - Test `/ad-report anomaly check` for mid-week check
-- Check `#marketing-team` channel access for bot
+- Test `/ad-report 30-days` ✅ (tested as `/ad-report month`)
+- Test `/ad-report 90-days`
+- Test `/ad-report Q1 FY27`
+- Test `/ad-report set-goals Q2 FY27`
+- Check `#marketing-team` channel access for bot ✅
+- Check `#ext_metadata_ambient` channel access for bot ✅
 - Verify HTML reports in repo under `reports/`, `reports/monthly/`, `reports/quarterly/`
 
 ---
