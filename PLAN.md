@@ -51,7 +51,7 @@ Ambient.ai runs paid campaigns on LinkedIn and Google Ads via Metadata.io. Today
 Call `slack_search_channels(query="marketing-team", channel_types="private_channel")` to get the channel ID. If the bot isn't in the channel yet, instruct Alberto to invite it.
 
 ### Step 2: Clone repo and set up structure
-Clone `https://github.com/AF975/Ad-Peformance-Agent.git` into the working directory. Create:
+Clone `https://github.com/AF975/Ad-Performance-Agent.git` into the working directory. Create:
 - `campaign_agent_state.json` — initial state with Q1 goals, empty snapshots, thresholds
 - `reports/` directory — where weekly HTML reports will be saved
 - `templates/weekly_report.html` — the HTML template (styled like the Mar 20 analysis)
@@ -325,7 +325,7 @@ CPL: $133 (-15% WoW) · Credits: 8,420 remaining (66% used)
 :bulb: *Rec:* Pause non-Blueprint offers on Enterprise segment — $900+ spent, 0 leads
 :bulb: *Rec:* Build dedicated PPC landing pages for Google traffic
 
-:link: *Full report:* github.com/AF975/Ad-Peformance-Agent/blob/main/reports/2026-03-27.html
+:link: *Full report:* github.com/AF975/Ad-Performance-Agent/blob/main/reports/2026-03-27.html
 _Reply in thread to ask questions · Next report: Apr 3_
 ```
 
@@ -416,7 +416,7 @@ The Google Drive MCP connector is read-only (search + fetch only) — it cannot 
 
 **Option A: HTML reports in Git repo + Slack (Recommended)**
 - Generate a styled HTML report (similar to the Mar 20 analysis) each week
-- Save it in the `Ad-Peformance-Agent` repo under `reports/YYYY-MM-DD.html`
+- Save it in the `Ad-Performance-Agent` repo under `reports/YYYY-MM-DD.html`
 - Post the GitHub link in the Slack message
 - Team accesses reports from GitHub; no Drive dependency
 - Pro: Fully automated, version-controlled. Con: Not in Drive.
@@ -434,7 +434,7 @@ The Google Drive MCP connector is read-only (search + fetch only) — it cannot 
 ---
 
 ## Resolved Decisions
-- **GitHub repo**: `https://github.com/AF975/Ad-Peformance-Agent.git` (existing)
+- **GitHub repo**: `https://github.com/AF975/Ad-Performance-Agent.git` (existing)
 - **Wednesday anomaly check**: 10am PT
 - **Friday weekly report**: 4pm PT
 - **Slack channels**: #marketing-team and #ext_metadata_ambient (all report types). Both private — will discover channel IDs and verify bot access during Step 1

@@ -2,7 +2,7 @@
 
 Henry is an AI-powered performance marketing agent built on Claude Code. He pulls live campaign data from Metadata.io, analyzes it against quarterly MQL goals, generates styled HTML reports, and posts summaries to Slack — all automatically.
 
-Henry runs as a Claude Code skill (`/ad-report`) and can also be triggered by scheduled tasks on a weekly cadence.
+Henry runs as a Claude Code skill (`/ad-report`) and can also be triggered manually at any time. Scheduled task definitions exist for future automation (weekly, monthly, quarterly, anomaly checks) but are not yet active.
 
 ---
 
@@ -34,7 +34,7 @@ Every week (or on demand), Henry:
 2. **Classifies experiments** by CTA type (Demo, White Paper, Webinar) using offer name pattern matching
 3. **Computes analytics** — week-over-week deltas, goal pacing, top performers, watch list, CTA coverage gaps
 4. **Generates an HTML report** — a styled, interactive page with progress bars, experiment cards, charts, alerts, and recommendations
-5. **Posts a Slack summary** to #marketing-team as "Henry — The Ad Performance Agent" (a dedicated Slack bot, not a personal account)
+5. **Posts a Slack summary** to #mktg-ad-reports as "Henry — The Ad Performance Agent" (a dedicated Slack bot, not a personal account)
 6. **Updates persistent memory** — snapshots, experiment tracking, decision log, alert history
 7. **Commits everything to GitHub** — report and state file are versioned and pushed
 
@@ -57,7 +57,8 @@ Every week (or on demand), Henry:
                   └─────┬──────┘  └────┬────────────┘
                         │              │
                   Pull campaign   Post summaries to
-                  data (LI + G)   #marketing-team
+                  data (LI + G)   #mktg-ad-reports +
+                                  #ext_metadata_ambient
                         │              │
                   ┌─────▼──────────────▼─────────┐
                   │  campaign_agent_state.json    │
@@ -74,9 +75,11 @@ Every week (or on demand), Henry:
 
 | Component | What it is | Where it lives |
 |---|---|---|
-| **Skill definition** | The instructions that tell Claude how to run the report | `~/.claude/skills/ad-report/skill.md` |
+| **Skill definition** | The instructions that tell Claude how to run the report | `~/.claude/skills/ad-report/SKILL.md` |
+| **Scheduled tasks** | Task definitions for future automation (not yet active) | `~/.claude/scheduled-tasks/marketing-*/SKILL.md` |
+| **Project settings** | Local Claude Code permissions for this project | `.claude/settings.local.json` (repo root) |
 | **State file** | Persistent memory — goals, snapshots, experiment tracking, decisions | `campaign_agent_state.json` (repo root) |
-| **HTML template** | The report layout with `{{PLACEHOLDER}}` tokens | `templates/weekly_report.html` |
+| **HTML templates** | Report layouts with `{{PLACEHOLDER}}` tokens | `templates/weekly_report.html`, `monthly_report.html`, `quarterly_report.html` |
 | **Generated reports** | Completed HTML reports, one per run | `reports/YYYY-MM-DD.html` |
 | **Slack bot script** | Shell script that posts to Slack via the bot token | `scripts/post-to-slack.sh` |
 | **Bot credentials** | Slack bot OAuth token | `.env` (gitignored, never committed) |
@@ -106,7 +109,7 @@ Henry runs manually via the `/ad-report` skill in Claude Code. Type the command 
 | Monthly roll-up | End of month | `/ad-report month` |
 | Quarterly report | End of quarter | `/ad-report quarter` |
 
-> **Why manual?** Henry posts to Slack as a dedicated bot (not your personal account). This requires a local bot token stored in `.env`, which isn't accessible to remote scheduled agents. Manual execution preserves Henry's bot identity.
+> **Note:** Henry posts to Slack as a dedicated bot (not your personal account) using a bot token stored in `.env`.
 
 ---
 
@@ -114,7 +117,7 @@ Henry runs manually via the `/ad-report` skill in Claude Code. Type the command 
 
 Each run generates three outputs:
 
-### 1. Slack Message (in #marketing-team)
+### 1. Slack Messages (in #mktg-ad-reports and #ext_metadata_ambient)
 
 A structured text summary posted by "Henry — The Ad Performance Agent" containing:
 - Key metrics (spend, leads, MQLs, CPL)
@@ -128,7 +131,7 @@ A structured text summary posted by "Henry — The Ad Performance Agent" contain
 
 A full interactive report viewable at:
 ```
-https://af975.github.io/Ad-Peformance-Agent/reports/YYYY-MM-DD.html
+https://af975.github.io/Ad-Performance-Agent/reports/YYYY-MM-DD.html
 ```
 
 Contains: goal progress bars, metric cards with WoW deltas, experiment ranking cards with badges, alert cards, recommendation cards, spend allocation chart, MQL trend chart, and decision log.
@@ -142,7 +145,9 @@ Contains: goal progress bars, metric cards with WoW deltas, experiment ranking c
 ## Repository Structure
 
 ```
-Ad-Peformance-Agent/
+Ad-Performance-Agent/
+├── .claude/
+│   └── settings.local.json       # Local Claude Code settings (permissions)
 ├── .env                          # Slack bot token (gitignored)
 ├── .gitignore                    # Keeps .env out of git
 ├── campaign_agent_state.json     # Persistent memory (the brain)
@@ -219,7 +224,8 @@ Ad-Peformance-Agent/
   ],
 
   "config": {
-    "slackChannelId": "C08UY0AF5FA",
+    "slackChannelId": "C0AQYCRHWQ1",
+    "slackExtMetadataChannelId": "C0A8S144RK4",
     "anomalyThresholds": { "cplSpikePercent": 30, "zeroLeadSpendThreshold": 300, ... }
   }
 }
@@ -334,7 +340,7 @@ Anomalies are deduped in `alertHistory` to avoid repeat noise.
 
 ## Slack Delivery
 
-Henry posts to #marketing-team (`C08UY0AF5FA`) as a dedicated Slack bot, not as any team member's personal account.
+Henry posts to #mktg-ad-reports (`C0AQYCRHWQ1`) and #ext_metadata_ambient (`C0A8S144RK4`) as a dedicated Slack bot, not as any team member's personal account.
 
 ### How the bot works
 
@@ -371,7 +377,7 @@ The MCP Slack tool authenticates with a personal user token, so messages appear 
 1. Launch Demo CTO campaigns immediately
 2. Scale Blueprint experiments to $50+/day
 
-Full report: https://af975.github.io/Ad-Peformance-Agent/reports/2026-03-24.html
+Full report: https://af975.github.io/Ad-Performance-Agent/reports/2026-03-24.html
 ```
 
 ---
@@ -384,7 +390,7 @@ Reports are generated from `templates/weekly_report.html` — a single-file HTML
 
 Reports are published via GitHub Pages at:
 ```
-https://af975.github.io/Ad-Peformance-Agent/reports/YYYY-MM-DD.html
+https://af975.github.io/Ad-Performance-Agent/reports/YYYY-MM-DD.html
 ```
 
 ### Report sections
@@ -410,14 +416,16 @@ https://af975.github.io/Ad-Peformance-Agent/reports/YYYY-MM-DD.html
 
 ## Reporting Cadence
 
-All reports are triggered manually via `/ad-report` in Claude Code.
+Reports are currently triggered manually via `/ad-report` in Claude Code.
 
-| Report | Suggested timing | Command | Status |
-|---|---|---|---|
-| **Weekly report** | Fridays ~4pm PT | `/ad-report` | ✅ Built |
-| **Anomaly check** | Wednesdays ~10am PT | `/ad-report anomaly check` | ✅ Built |
-| **Monthly roll-up** | End of month | `/ad-report month` | ✅ Built |
-| **Quarterly report** | End of quarter | `/ad-report quarter` | ✅ Built |
+| Report | Suggested timing | Command |
+|---|---|---|
+| **Weekly report** | Fridays ~4pm PT | `/ad-report` |
+| **Anomaly check** | Wednesdays ~10am PT | `/ad-report anomaly check` |
+| **Monthly roll-up** | End of month | `/ad-report month` |
+| **Quarterly report** | End of quarter | `/ad-report quarter` |
+
+Scheduled task definitions exist in `~/.claude/scheduled-tasks/` for future automation but are not yet active.
 
 ### Anomaly Check
 
@@ -432,7 +440,7 @@ Covers the **last 30 days** from the date of invocation. Includes:
 - Top 5 performers and bottom 5 underperformers
 - CTA coverage analysis
 - Strategic recommendations (bigger-picture than weekly)
-- Posts to both #marketing-team and #ext_metadata_ambient
+- Posts to #mktg-ad-reports and #ext_metadata_ambient
 - Report saved to `reports/monthly/YYYY-MM-DD.html`
 
 ### Quarterly Report (`/ad-report quarter`)
@@ -445,7 +453,7 @@ Covers the **last 90 days** from the date of invocation. The most comprehensive 
 - Monthly trend table
 - Key learnings (what worked, what didn't, channel/CTA insights)
 - Strategic recommendations for next quarter
-- Posts to both #marketing-team and #ext_metadata_ambient
+- Posts to #mktg-ad-reports and #ext_metadata_ambient
 - Report saved to `reports/quarterly/YYYY-MM-DD.html`
 
 ---
@@ -457,8 +465,8 @@ All configurable values live in the `config` section of `campaign_agent_state.js
 ```json
 {
   "config": {
-    "slackChannelId": "C08UY0AF5FA",
-    "slackEstaffChannelId": "G01PC9HRFDK",
+    "slackChannelId": "C0AQYCRHWQ1",
+    "slackExtMetadataChannelId": "C0A8S144RK4",
     "anomalyThresholds": {
       "cplSpikePercent": 30,
       "zeroLeadSpendThreshold": 300,
@@ -496,17 +504,17 @@ The skill used the MCP Slack tool instead of the bot script. Check that Step 7 i
 
 ### "Bot can't post to channel"
 
-Make sure the bot is invited to #marketing-team. In Slack: `/invite @Henry - The Ad Performance Agent`
+Make sure the bot is invited to #mktg-ad-reports and #ext_metadata_ambient. In Slack: `/invite @Henry - The Ad Performance Agent`
 
 ### "HTML report shows raw code on GitHub"
 
 You're viewing the GitHub file page, not the GitHub Pages URL. Use:
 ```
-https://af975.github.io/Ad-Peformance-Agent/reports/YYYY-MM-DD.html
+https://af975.github.io/Ad-Performance-Agent/reports/YYYY-MM-DD.html
 ```
 not:
 ```
-https://github.com/AF975/Ad-Peformance-Agent/blob/main/reports/YYYY-MM-DD.html
+https://github.com/AF975/Ad-Performance-Agent/blob/main/reports/YYYY-MM-DD.html
 ```
 
 ### "State file is corrupted"
