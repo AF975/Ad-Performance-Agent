@@ -1,6 +1,6 @@
 {
   "version": "1.0",
-  "lastUpdated": "2026-03-27T19:00:00-07:00",
+  "lastUpdated": "2026-04-01T17:00:00-07:00",
   "goals": {
     "quarter": "Q1_FY27",
     "dateRange": {
@@ -202,9 +202,134 @@
           "issue": "0 credits remaining, unresolved since Mar 24"
         }
       ]
+    },
+    {
+      "weekEnding": "2026-04-01",
+      "reportType": "monthly",
+      "portfolio": {
+        "totalSpend": 7261,
+        "totalLeads": 23,
+        "totalMQLs": 8,
+        "avgCPL": 316
+      },
+      "qtd": {
+        "totalSpend": 21174,
+        "totalLeads": 26,
+        "totalMQLs": 8
+      },
+      "byChannel": {
+        "LINKEDIN": {
+          "spend": 6254,
+          "leads": 23,
+          "mqls": 8,
+          "cpl": 272
+        },
+        "GOOGLE_ADS": {
+          "spend": 1007,
+          "leads": 0,
+          "mqls": 0,
+          "cpl": null
+        }
+      },
+      "byChannelQTD": {
+        "LINKEDIN": {
+          "spend": 20167,
+          "leads": 26,
+          "mqls": 8,
+          "cpl": 776
+        },
+        "GOOGLE_ADS": {
+          "spend": 1007,
+          "leads": 0,
+          "mqls": 0,
+          "cpl": null
+        }
+      },
+      "mqlProgress": {
+        "LINKEDIN": {
+          "total": 8,
+          "demo_cto": 0,
+          "white_paper_download": 8,
+          "webinar_on_demand_view": 0
+        },
+        "GOOGLE_ADS": {
+          "total": 0,
+          "demo_cto": 0,
+          "white_paper_download": 0,
+          "webinar_on_demand_view": 0
+        }
+      },
+      "topExperiments": [
+        {
+          "name": "Blueprint WP → Enterprise v6",
+          "experimentId": 1793258,
+          "cpl": 71,
+          "leads": 4,
+          "mqls": 2,
+          "mqlRate": 50
+        },
+        {
+          "name": "Agentic WP → Campus Police",
+          "experimentId": 1785667,
+          "cpl": 225,
+          "leads": 3,
+          "mqls": 2,
+          "mqlRate": 66.7
+        },
+        {
+          "name": "Agentic Ops WP → Higher Ed",
+          "experimentId": 1793310,
+          "cpl": 253,
+          "leads": 2,
+          "mqls": 1,
+          "mqlRate": 50
+        }
+      ],
+      "watchList": [
+        {
+          "name": "Demo CTO Gap",
+          "issue": "0 campaigns running, 8/18 MQL target uncovered, 29 days left"
+        },
+        {
+          "name": "Google Ads (Restarted)",
+          "issue": "$1,007 spend, 78 clicks, 0 leads — landing page conversion issue"
+        },
+        {
+          "name": "Credit Balance DENIED",
+          "issue": "0 credits remaining since Mar 24"
+        },
+        {
+          "name": "BTB Webinar",
+          "issue": "$397 spend, 1 lead, 0 MQLs in 30 days"
+        }
+      ]
     }
   ],
   "decisionLog": [
+    {
+      "date": "2026-04-01",
+      "action": "Monthly report generated — 30-day window (Mar 2 – Apr 1)",
+      "reason": "QTD: 8/18 MQLs (44%) at 67% of quarter. BEHIND pacing. White Paper CTA exceeded target (8/4). Demo CTO remains at 0/8.",
+      "outcome": "done"
+    },
+    {
+      "date": "2026-04-01",
+      "action": "Google Ads experiments detected as restarted",
+      "reason": "EDU-KW and Enterprise Keywords experiments now Active (manual restart). $1,007 combined 30-day spend, 78 clicks, 0 leads.",
+      "outcome": "done"
+    },
+    {
+      "date": "2026-04-01",
+      "action": "8 new experiments added to tracking",
+      "reason": "Discovered experiments not previously in knownExperiments: Blueprint WP → SFDC, Google Ads EDU-KW, Google Ads Enterprise, Five Tenets → Higher Ed SQ, Five Tenets → Ent G2000, Agentic WP → Ent G2000, plus 2 paused LP experiments.",
+      "outcome": "done"
+    },
+    {
+      "date": "2026-04-01",
+      "action": "eStaff Slack channel not found",
+      "reason": "Attempted to post executive summary to channel G01PC9HRFDK. Slack API returned channel_not_found. Bot may need to be invited.",
+      "outcome": "pending"
+    },
     {
       "date": "2026-03-27",
       "action": "Weekly report generated — Mar 23-27",
@@ -302,10 +427,10 @@
         "channel": "LINKEDIN",
         "status": "Active",
         "cta": "white_paper_download",
-        "lifetimeSpend": 217,
+        "lifetimeSpend": 282,
         "lifetimeLeads": 4,
         "lifetimeMQLs": 2,
-        "lastWeekCPL": 66
+        "lastWeekCPL": 71
       },
       "1793299": {
         "name": "Blueprint WP → Campus Police",
@@ -313,10 +438,10 @@
         "channel": "LINKEDIN",
         "status": "Active",
         "cta": "white_paper_download",
-        "lifetimeSpend": 124,
+        "lifetimeSpend": 714,
         "lifetimeLeads": 2,
         "lifetimeMQLs": 2,
-        "lastWeekCPL": 86
+        "lastWeekCPL": 357
       },
       "1793272": {
         "name": "Pulsar WP → Enterprise v6",
@@ -324,10 +449,10 @@
         "channel": "LINKEDIN",
         "status": "Active",
         "cta": "white_paper_download",
-        "lifetimeSpend": 115,
-        "lifetimeLeads": 0,
+        "lifetimeSpend": 651,
+        "lifetimeLeads": 1,
         "lifetimeMQLs": 0,
-        "lastWeekCPL": null
+        "lastWeekCPL": 651
       },
       "1793310": {
         "name": "Agentic Ops WP → Higher Ed Facilities",
@@ -335,10 +460,10 @@
         "channel": "LINKEDIN",
         "status": "Active",
         "cta": "white_paper_download",
-        "lifetimeSpend": 252,
+        "lifetimeSpend": 506,
         "lifetimeLeads": 2,
         "lifetimeMQLs": 1,
-        "lastWeekCPL": 142
+        "lastWeekCPL": 253
       },
       "1785667": {
         "name": "Agentic WP → Campus Police",
@@ -346,10 +471,10 @@
         "channel": "LINKEDIN",
         "status": "Active",
         "cta": "white_paper_download",
-        "lifetimeSpend": 589,
+        "lifetimeSpend": 785,
         "lifetimeLeads": 3,
         "lifetimeMQLs": 2,
-        "lastWeekCPL": null
+        "lastWeekCPL": 225
       },
       "1788223": {
         "name": "Five Tenets → SFDC Prospects Higher Ed",
@@ -357,10 +482,10 @@
         "channel": "LINKEDIN",
         "status": "Active",
         "cta": "white_paper_download",
-        "lifetimeSpend": 473,
-        "lifetimeLeads": 2,
+        "lifetimeSpend": 1007,
+        "lifetimeLeads": 3,
         "lifetimeMQLs": 0,
-        "lastWeekCPL": null
+        "lastWeekCPL": 336
       },
       "1785652": {
         "name": "Five Tenets → Higher Ed Facilities REC",
@@ -368,21 +493,21 @@
         "channel": "LINKEDIN",
         "status": "Active",
         "cta": "white_paper_download",
-        "lifetimeSpend": 479,
+        "lifetimeSpend": 886,
         "lifetimeLeads": 2,
         "lifetimeMQLs": 0,
-        "lastWeekCPL": null
+        "lastWeekCPL": 443
       },
       "1785666": {
         "name": "Agentic WP → Higher Ed Facilities REC",
         "firstSeen": "2026-03-24",
         "channel": "LINKEDIN",
-        "status": "Active",
+        "status": "Paused",
         "cta": "white_paper_download",
-        "lifetimeSpend": 162,
-        "lifetimeLeads": 0,
-        "lifetimeMQLs": 0,
-        "lastWeekCPL": null
+        "lifetimeSpend": 307,
+        "lifetimeLeads": 1,
+        "lifetimeMQLs": 1,
+        "lastWeekCPL": 175
       },
       "1793317": {
         "name": "BTB Webinar → Enterprise v6",
@@ -423,10 +548,10 @@
         "channel": "LINKEDIN",
         "status": "Active",
         "cta": "webinar_on_demand_view",
-        "lifetimeSpend": 94,
-        "lifetimeLeads": 0,
+        "lifetimeSpend": 397,
+        "lifetimeLeads": 1,
         "lifetimeMQLs": 0,
-        "lastWeekCPL": null
+        "lastWeekCPL": 397
       },
       "1793239": {
         "name": "BTB Webinar → SFDC Prospects",
@@ -495,12 +620,12 @@
         "lastWeekCPL": null
       },
       "1793300": {
-        "name": "Blueprint WP → Enterprise v6 v2",
-        "firstSeen": "2026-03-24",
+        "name": "Blueprint WP → SFDC Prospects",
+        "firstSeen": "2026-04-01",
         "channel": "LINKEDIN",
         "status": "Active",
         "cta": "white_paper_download",
-        "lifetimeSpend": 36,
+        "lifetimeSpend": 287,
         "lifetimeLeads": 0,
         "lifetimeMQLs": 0,
         "lastWeekCPL": null
@@ -533,10 +658,10 @@
         "channel": "LINKEDIN",
         "status": "Active",
         "cta": "white_paper_download",
-        "lifetimeSpend": 36,
-        "lifetimeLeads": 0,
+        "lifetimeSpend": 63,
+        "lifetimeLeads": 1,
         "lifetimeMQLs": 0,
-        "lastWeekCPL": null
+        "lastWeekCPL": 63
       },
       "1793257": {
         "name": "Blueprint WP → Enterprise v6 rect",
@@ -561,6 +686,83 @@
         "lastWeekCPL": null,
         "pausedDate": "2026-03-19",
         "pausedBy": "Henry Mann"
+      },
+      "1784580": {
+        "name": "Google Ads EDU-KW",
+        "firstSeen": "2026-04-01",
+        "channel": "GOOGLE_ADS",
+        "status": "Active",
+        "cta": "other",
+        "lifetimeSpend": 781,
+        "lifetimeLeads": 0,
+        "lifetimeMQLs": 0,
+        "lastWeekCPL": null
+      },
+      "1784579": {
+        "name": "Google Ads Enterprise Keywords",
+        "firstSeen": "2026-04-01",
+        "channel": "GOOGLE_ADS",
+        "status": "Active",
+        "cta": "other",
+        "lifetimeSpend": 727,
+        "lifetimeLeads": 0,
+        "lifetimeMQLs": 0,
+        "lastWeekCPL": null
+      },
+      "1785651": {
+        "name": "Five Tenets → Higher Ed SQ",
+        "firstSeen": "2026-04-01",
+        "channel": "LINKEDIN",
+        "status": "Paused",
+        "cta": "white_paper_download",
+        "lifetimeSpend": 369,
+        "lifetimeLeads": 1,
+        "lifetimeMQLs": 0,
+        "lastWeekCPL": 369
+      },
+      "1785647": {
+        "name": "Five Tenets → Enterprise G2000",
+        "firstSeen": "2026-04-01",
+        "channel": "LINKEDIN",
+        "status": "Paused",
+        "cta": "white_paper_download",
+        "lifetimeSpend": 445,
+        "lifetimeLeads": 1,
+        "lifetimeMQLs": 0,
+        "lastWeekCPL": 445
+      },
+      "1785662": {
+        "name": "Agentic WP → Enterprise G2000",
+        "firstSeen": "2026-04-01",
+        "channel": "LINKEDIN",
+        "status": "Paused",
+        "cta": "white_paper_download",
+        "lifetimeSpend": 482,
+        "lifetimeLeads": 1,
+        "lifetimeMQLs": 0,
+        "lastWeekCPL": 482
+      },
+      "1781819": {
+        "name": "Agentic WP → Higher Ed LP",
+        "firstSeen": "2026-04-01",
+        "channel": "LINKEDIN",
+        "status": "Paused",
+        "cta": "white_paper_download",
+        "lifetimeSpend": 685,
+        "lifetimeLeads": 2,
+        "lifetimeMQLs": 0,
+        "lastWeekCPL": 342
+      },
+      "1781814": {
+        "name": "Five Tenets → Campus Police LP",
+        "firstSeen": "2026-04-01",
+        "channel": "LINKEDIN",
+        "status": "Paused",
+        "cta": "white_paper_download",
+        "lifetimeSpend": 510,
+        "lifetimeLeads": 1,
+        "lifetimeMQLs": 0,
+        "lastWeekCPL": 510
       }
     }
   },
