@@ -9,48 +9,39 @@ Ambient.ai runs paid campaigns on LinkedIn and Google Ads via Metadata.io. Today
 
 ```
 ┌─────────────────────────────────────┐
-│  Claude Code Scheduled Tasks        │
-│  ┌───────────────────────────────┐  │
-│  │ marketing-weekly-report       │  │
-│  │ Fri 4pm PT (0 16 * * 5)      │  │
-│  └───────────────────────────────┘  │
-│  ┌───────────────────────────────┐  │
-│  │ marketing-anomaly-check       │  │
-│  │ Wed 10am PT  (0 10 * * 3)    │  │
-│  └───────────────────────────────┘  │
-│  ┌───────────────────────────────┐  │
-│  │ marketing-monthly-report      │  │
-│  │ Last Fri of month, 4pm PT    │  │
-│  └───────────────────────────────┘  │
-│  ┌───────────────────────────────┐  │
-│  │ marketing-quarterly-report    │  │
-│  │ End of quarter                │  │
-│  └───────────────────────────────┘  │
+│  Claude Code — Manual Execution     │
 │  ┌───────────────────────────────┐  │
 │  │ /ad-report (on-demand skill)  │  │
+│  │  - Full weekly report         │  │
+│  │  - /ad-report anomaly check   │  │
+│  │  - /ad-report linkedin only   │  │
+│  │  - /ad-report google only     │  │
+│  │  - /ad-report last 14 days    │  │
 │  └───────────────────────────────┘  │
 └──────────┬──────────────┬───────────┘
            │              │
-     ┌─────▼─────┐  ┌────▼─────┐
-     │ Metadata  │  │  Slack   │
-     │ MCP Tools │  │ MCP Tools│
-     └─────┬─────┘  └────┬─────┘
+     ┌─────▼─────┐  ┌────▼────────────┐
+     │ Metadata  │  │ Slack Bot       │
+     │ MCP Tools │  │ (post-to-slack  │
+     │           │  │  via Bot Token) │
+     └─────┬─────┘  └────┬────────────┘
            │              │
-     Pull campaign   Post reports to
-     data (LI + G)   #marketing-team + #estaff
-           │              │
+     Pull campaign   Post reports as
+     data (LI + G)   "Henry" bot to
+           │          #marketing-team
      ┌─────▼──────────────▼───────┐
      │  campaign_agent_state.json │
      │  (GitHub repo — shared)    │
      └────────────────────────────┘
 ```
 
-**Four components:**
-1. **On-demand skill (`/ad-report`)** — invoke any time from Claude Code to run a full report
-2. **Two scheduled tasks** — Friday full report + Wednesday anomaly check (both call the same core logic)
-3. **Metadata MCP** — data source for all campaign/experiment metrics
-4. **Slack MCP** — output channel; team can reply in thread for ad-hoc questions
-5. **State file in GitHub** — persistent memory (goals, snapshots, decisions, alerts)
+**Components:**
+1. **On-demand skill (`/ad-report`)** — invoke from Claude Code to run reports and anomaly checks
+2. **Metadata MCP** — data source for all campaign/experiment metrics
+3. **Slack bot script** — posts as Henry (dedicated bot identity), not as a personal account
+4. **State file in GitHub** — persistent memory (goals, snapshots, decisions, alerts)
+
+> **Why manual instead of scheduled?** Scheduled remote triggers (RemoteTrigger) run in Anthropic's cloud and cannot access the local `.env` file with the Slack bot token. Session-scoped cron jobs (CronCreate) die when the session ends. Manual execution via `/ad-report` preserves the Henry bot identity in Slack while keeping full control over timing. This can be revisited if Anthropic adds secret storage for remote triggers.
 
 ---
 
@@ -85,70 +76,75 @@ Execute the data collection sequence once interactively to:
 - Generate the first HTML report and Slack message as a test
 - Post as a Slack draft first for Alberto to review
 
-### Step 5: Create scheduled task — Friday Weekly Report
-`taskId: marketing-weekly-report` | Cron: `0 16 * * 5`
+### Step 5: Create on-demand skill — `/ad-report` ✅
+Create a Claude Code skill that can be invoked manually with `/ad-report`. This is the single entry point for all report types:
 
-The task prompt instructs the agent to:
-1. Read state file
-2. Pull data from Metadata (7+ MCP calls)
-3. Compute WoW deltas, goal pacing, rankings
-4. Generate HTML report → save to `reports/YYYY-MM-DD.html`
-5. Compose compact Slack message with key metrics + report link
-6. Post to #marketing-team
-7. Update state file, git commit + push
+| Command | What it does |
+|---|---|
+| `/ad-report` | Full weekly report (Monday through today) |
+| `/ad-report month` | Monthly roll-up (last 30 days from today) |
+| `/ad-report quarter` | Quarterly report (last 90 days from today) |
+| `/ad-report anomaly check` | Mid-week anomaly check (posts only if issues found) |
+| `/ad-report linkedin only` | LinkedIn experiments only |
+| `/ad-report google only` | Google Ads keyword data only |
+| `/ad-report last 14 days` | Custom lookback window |
 
-### Step 6: Create scheduled task — Wednesday Anomaly Check
-`taskId: marketing-anomaly-check` | Cron: `0 10 * * 3`
+The skill runs locally, so it has access to the `.env` file and posts to Slack as Henry via the bot script.
 
-Same as before — conditional post only if anomalies detected.
+**Suggested cadence (manual):**
+- **Fridays ~4pm PT** — run `/ad-report` for the full weekly report
+- **Wednesdays ~10am PT** — run `/ad-report anomaly check` for mid-week anomaly detection
+- **End of month** — run `/ad-report month` for the monthly roll-up
+- **End of quarter** — run `/ad-report quarter` for the quarterly report
 
-### Step 7: Create on-demand skill — `/ad-report`
-Create a Claude Code skill (via the skill-creator) that can be invoked manually with `/ad-report`. This lets you:
-- Run a full report any time (not just Fridays)
-- Optionally pass parameters like `/ad-report last 7 days` or `/ad-report linkedin only`
-- The skill reuses the same logic as the Friday scheduled task (read state, pull data, generate report, post to Slack)
+### Step 6: Create monthly roll-up report ✅
 
-This skill will also be what the scheduled tasks reference internally, keeping the logic in one place.
+**Trigger:** `/ad-report month` — covers the **last 30 days** from the day of invocation.
 
-### Step 8: Create scheduled task — Monthly Roll-Up Report
-`taskId: marketing-monthly-report` | Cron: `0 16 * * 5` (last Friday of each month — agent checks if it's the last Friday and only runs the monthly version then)
-
-The monthly report aggregates all weekly snapshots from the month and provides:
-- Month-over-month trends (spend, leads, MQLs, CPL)
-- Goal pacing with updated projection (are we on track for quarter end?)
-- Best/worst performing experiments of the month
-- Budget utilization summary
+The monthly report provides a bigger-picture view than weekly:
+- 30-day portfolio summary with daily/weekly averages
+- Budget utilization by channel (spend split, CPL per channel)
+- Weekly trend table from snapshots within the 30-day window
+- Top 5 performers and bottom 5 underperformers
 - CTA coverage analysis (which CTAs are missing campaigns?)
+- Goal pacing against quarterly targets
 - Strategic recommendations (bigger-picture than weekly tactical recs)
 
-**Slack delivery:**
-- Posts to `#marketing-team` (detailed version)
-- Posts an executive summary to `#estaff` (shorter, outcome-focused)
+**Slack delivery:** Posts to both `#marketing-team` and `#ext_metadata_ambient`
 
-**HTML report:** Saved as `reports/monthly/YYYY-MM.html` — more detailed than weekly, includes month-long trend charts.
+**HTML report:** Saved as `reports/monthly/YYYY-MM-DD.html`
+**HTML template:** `templates/monthly_report.html`
 
-### Step 9: Create scheduled task — Quarterly Roll-Up Report
-`taskId: marketing-quarterly-report` | Fires at end of quarter (Apr 30 for Q1 FY27)
+**Charts:** Spend allocation (horizontal bar), weekly spend trend by channel (stacked bar), MQL progress vs target pace (line)
+
+### Step 7: Create quarterly report ✅
+
+**Trigger:** `/ad-report quarter` — covers the **last 90 days** from the day of invocation.
 
 The quarterly report is the most comprehensive:
-- Full quarter performance vs. goals (final scorecard)
-- MQL attainment by channel and CTA (actuals vs. targets)
-- Total spend and ROI analysis
-- Experiment lifecycle summary (what launched, what was paused, what worked)
-- Quarter-over-quarter comparison (when Q2+ data exists)
-- Key learnings and strategic recommendations for next quarter
-- Decision log highlights — most impactful decisions made
+- Quarter scorecard with verdict (GOAL MET / PARTIAL / MISSED)
+- MQL attainment table by channel and CTA with percentage attainment
+- 90-day portfolio summary with monthly averages
+- Budget utilization by channel
+- Monthly trend table
+- Experiment lifecycle summary (all experiments with status, spend, leads, MQLs, CPL)
+- Top 5 performers
+- Key learnings (what worked, what didn't, audience/channel/CTA insights)
+- Strategic recommendations for next quarter (goal setting, budget, experiment strategy)
+- Decision log highlights
 
 **Slack delivery:**
-- Full post to `#marketing-team`
-- Executive summary to `#estaff` — focused on goal attainment, ROI, and top-line takeaways
+Posts to both `#marketing-team` and `#ext_metadata_ambient`
 
-**HTML report:** Saved as `reports/quarterly/Q1_FY27.html`
+**HTML report:** Saved as `reports/quarterly/YYYY-MM-DD.html`
+**HTML template:** `templates/quarterly_report.html`
 
-### Step 10: Verify
-- List all scheduled tasks (weekly, anomaly, monthly, quarterly)
-- Manual trigger via `/ad-report` to test weekly
-- Check both `#marketing-team` and `#estaff` channel access
+**Charts:** Monthly spend by channel (stacked bar), MQL progress vs target pace (line), CTA effectiveness (grouped bar: actual vs target)
+
+### Step 8: Verify
+- Test `/ad-report` for full weekly report
+- Test `/ad-report anomaly check` for mid-week check
+- Check `#marketing-team` channel access for bot
 - Verify HTML reports in repo under `reports/`, `reports/monthly/`, `reports/quarterly/`
 
 ---
@@ -383,6 +379,6 @@ The Google Drive MCP connector is read-only (search + fetch only) — it cannot 
 - **GitHub repo**: `https://github.com/AF975/Ad-Peformance-Agent.git` (existing)
 - **Wednesday anomaly check**: 10am PT
 - **Friday weekly report**: 4pm PT
-- **Slack channels**: #marketing-team (weekly + monthly + quarterly) and #estaff (monthly + quarterly exec summaries). Both private — will discover channel IDs and verify bot access during Step 1
+- **Slack channels**: #marketing-team and #ext_metadata_ambient (all report types). Both private — will discover channel IDs and verify bot access during Step 1
 - **Report archiving**: Option A — HTML reports in git repo under `reports/`, link shared in Slack
 - **Slack format**: Compact single message with key metrics + link to full HTML report

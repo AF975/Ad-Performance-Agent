@@ -47,7 +47,7 @@ Every week (or on demand), Henry:
                         │   Claude Code         │
                         │                       │
                         │  /ad-report skill     │
-                        │  Scheduled tasks      │
+                        │  (manual execution)   │
                         └───┬──────────┬────────┘
                             │          │
                   ┌─────────▼──┐  ┌────▼────────────┐
@@ -85,27 +85,28 @@ Every week (or on demand), Henry:
 
 ## How to Run Henry
 
-### On-demand (in Claude Code)
-
-Type `/ad-report` in Claude Code. That's it. Henry will run the full pipeline and produce a report.
-
-**Optional arguments:**
+Henry runs manually via the `/ad-report` skill in Claude Code. Type the command and Henry handles the rest.
 
 | Command | What it does |
 |---|---|
 | `/ad-report` | Full weekly report (Monday through today) |
+| `/ad-report month` | Monthly roll-up (last 30 days from today) |
+| `/ad-report quarter` | Quarterly report (last 90 days from today) |
+| `/ad-report anomaly check` | Mid-week anomaly check (posts only if issues found) |
 | `/ad-report linkedin only` | LinkedIn experiments only |
 | `/ad-report google only` | Google Ads keyword data only |
 | `/ad-report last 14 days` | Custom lookback window instead of current week |
 
-### Scheduled (automatic)
+### Suggested cadence
 
-Henry runs automatically via Claude Code scheduled tasks:
-
-| Task | Schedule | What it does |
+| Report | When to run | Command |
 |---|---|---|
-| `marketing-weekly-report` | Every Friday at 4pm PT | Full weekly report |
-| `marketing-anomaly-check` | Every Wednesday at 10am PT | Mid-week check; only posts if issues found |
+| Weekly report | Fridays ~4pm PT | `/ad-report` |
+| Mid-week anomaly check | Wednesdays ~10am PT | `/ad-report anomaly check` |
+| Monthly roll-up | End of month | `/ad-report month` |
+| Quarterly report | End of quarter | `/ad-report quarter` |
+
+> **Why manual?** Henry posts to Slack as a dedicated bot (not your personal account). This requires a local bot token stored in `.env`, which isn't accessible to remote scheduled agents. Manual execution preserves Henry's bot identity.
 
 ---
 
@@ -150,11 +151,13 @@ Ad-Peformance-Agent/
 ├── scripts/
 │   └── post-to-slack.sh          # Slack bot posting script
 ├── templates/
-│   └── weekly_report.html        # HTML report template
+│   ├── weekly_report.html        # Weekly HTML report template
+│   ├── monthly_report.html       # Monthly HTML report template (last 30 days)
+│   └── quarterly_report.html     # Quarterly HTML report template (last 90 days)
 └── reports/
-    ├── 2026-03-24.html           # Weekly reports (one per run)
-    ├── monthly/                  # Monthly roll-ups (future)
-    └── quarterly/                # Quarterly reports (future)
+    ├── 2026-03-24.html           # Weekly reports
+    ├── monthly/                  # Monthly roll-ups (/ad-report month)
+    └── quarterly/                # Quarterly reports (/ad-report quarter)
 ```
 
 ---
@@ -405,29 +408,45 @@ https://af975.github.io/Ad-Peformance-Agent/reports/YYYY-MM-DD.html
 
 ---
 
-## Scheduled Tasks
+## Reporting Cadence
 
-### Weekly Report — Friday 4pm PT
+All reports are triggered manually via `/ad-report` in Claude Code.
 
-**Task ID:** `marketing-weekly-report`
-**Cron:** `0 16 * * 5`
+| Report | Suggested timing | Command | Status |
+|---|---|---|---|
+| **Weekly report** | Fridays ~4pm PT | `/ad-report` | ✅ Built |
+| **Anomaly check** | Wednesdays ~10am PT | `/ad-report anomaly check` | ✅ Built |
+| **Monthly roll-up** | End of month | `/ad-report month` | ✅ Built |
+| **Quarterly report** | End of quarter | `/ad-report quarter` | ✅ Built |
 
-Runs the full `/ad-report` pipeline. This is the primary reporting cadence.
-
-### Anomaly Check — Wednesday 10am PT
-
-**Task ID:** `marketing-anomaly-check`
-**Cron:** `0 10 * * 3`
+### Anomaly Check
 
 A lighter check that pulls Mon–Wed data and compares against the last snapshot (pro-rated). Only posts to Slack if anomalies are detected. Stays silent if everything looks normal.
 
-### Monthly Roll-Up (planned)
+### Monthly Roll-Up (`/ad-report month`)
 
-Aggregates all weekly snapshots from the month. Posts to #marketing-team and an executive summary to #estaff.
+Covers the **last 30 days** from the date of invocation. Includes:
+- 30-day portfolio summary with daily/weekly averages
+- Budget utilization by channel (spend split, CPL per channel)
+- Weekly trend table from snapshots within the window
+- Top 5 performers and bottom 5 underperformers
+- CTA coverage analysis
+- Strategic recommendations (bigger-picture than weekly)
+- Posts to both #marketing-team and #ext_metadata_ambient
+- Report saved to `reports/monthly/YYYY-MM-DD.html`
 
-### Quarterly Report (planned)
+### Quarterly Report (`/ad-report quarter`)
 
-End-of-quarter scorecard with full goal attainment, ROI analysis, and strategic recommendations.
+Covers the **last 90 days** from the date of invocation. The most comprehensive report:
+- Quarter scorecard with verdict (GOAL MET / PARTIAL / MISSED)
+- MQL attainment table by channel and CTA with percentage attainment
+- 90-day portfolio summary with monthly averages
+- Experiment lifecycle summary (all experiments with status and lifetime metrics)
+- Monthly trend table
+- Key learnings (what worked, what didn't, channel/CTA insights)
+- Strategic recommendations for next quarter
+- Posts to both #marketing-team and #ext_metadata_ambient
+- Report saved to `reports/quarterly/YYYY-MM-DD.html`
 
 ---
 

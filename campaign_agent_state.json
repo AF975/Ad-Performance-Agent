@@ -768,7 +768,7 @@
   },
   "config": {
     "slackChannelId": "C08UY0AF5FA",
-    "slackEstaffChannelId": "G01PC9HRFDK",
+    "slackExtMetadataChannelId": "ext_metadata_ambient",
     "repoPath": "/Users/alberto/Documents/Cluade Workspace/Code/Ad-Peformance-Agent",
     "anomalyThresholds": {
       "cplSpikePercent": 30,

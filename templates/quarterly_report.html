@@ -1,0 +1,557 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Quarterly Performance Report — {{REPORT_DATE}}</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #fafaf9;
+    --bg-card: #ffffff;
+    --bg-surface: #f3f3f1;
+    --text-primary: #1a1a1a;
+    --text-secondary: #6b6b6b;
+    --text-tertiary: #9a9a9a;
+    --border: #e8e8e5;
+    --green: #1a8a5c;
+    --green-bg: #edf7f1;
+    --red: #c93a3a;
+    --red-bg: #fceeed;
+    --blue: #2563a8;
+    --blue-bg: #eef4fb;
+    --amber: #b07317;
+    --amber-bg: #fdf4e7;
+    --radius: 10px;
+    --radius-lg: 14px;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --bg: #141413;
+      --bg-card: #1e1e1c;
+      --bg-surface: #252524;
+      --text-primary: #e8e8e4;
+      --text-secondary: #a0a09a;
+      --text-tertiary: #6b6b66;
+      --border: #333330;
+      --green-bg: #162e22;
+      --red-bg: #2e1616;
+      --blue-bg: #162030;
+      --amber-bg: #2e2416;
+    }
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'DM Sans', sans-serif; background: var(--bg); color: var(--text-primary); padding: 32px 24px; max-width: 900px; margin: 0 auto; }
+
+  /* Header */
+  .header { margin-bottom: 32px; }
+  .header h1 { font-size: 22px; font-weight: 600; letter-spacing: -0.5px; margin-bottom: 4px; }
+  .header p { font-size: 13px; color: var(--text-secondary); }
+  .header .period-badge { display: inline-block; font-size: 11px; font-weight: 600; padding: 3px 10px; border-radius: 20px; background: var(--amber-bg); color: var(--amber); margin-top: 8px; }
+
+  /* Sections */
+  .section { margin-bottom: 28px; }
+  .section-title { font-size: 14px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.8px; color: var(--text-tertiary); margin-bottom: 14px; }
+  .divider { border: none; border-top: 1px solid var(--border); margin: 28px 0; }
+
+  /* Scorecard */
+  .scorecard { background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 24px; margin-bottom: 16px; }
+  .scorecard-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
+  .scorecard-title { font-size: 20px; font-weight: 600; }
+  .scorecard-verdict { font-size: 14px; font-weight: 600; padding: 6px 16px; border-radius: 20px; }
+  .verdict-met { background: var(--green-bg); color: var(--green); }
+  .verdict-partial { background: var(--amber-bg); color: var(--amber); }
+  .verdict-missed { background: var(--red-bg); color: var(--red); }
+
+  /* Goal Tracker */
+  .goal-card { background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 20px 24px; margin-bottom: 12px; }
+  .goal-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; }
+  .goal-title { font-size: 18px; font-weight: 600; }
+  .goal-pacing { font-size: 12px; font-weight: 600; padding: 4px 12px; border-radius: 20px; }
+  .pacing-on-track { background: var(--green-bg); color: var(--green); }
+  .pacing-behind { background: var(--amber-bg); color: var(--amber); }
+  .pacing-at-risk { background: var(--red-bg); color: var(--red); }
+
+  .progress-row { margin-bottom: 12px; }
+  .progress-label { display: flex; justify-content: space-between; font-size: 12px; margin-bottom: 4px; }
+  .progress-label span:first-child { color: var(--text-secondary); font-weight: 500; }
+  .progress-label span:last-child { color: var(--text-primary); font-weight: 600; }
+  .progress-bar { height: 8px; background: var(--bg-surface); border-radius: 4px; overflow: hidden; position: relative; }
+  .progress-fill { height: 100%; border-radius: 4px; transition: width 0.3s; }
+  .progress-fill.green { background: var(--green); }
+  .progress-fill.amber { background: var(--amber); }
+  .progress-fill.red { background: var(--red); }
+  .progress-marker { position: absolute; top: -2px; height: 12px; width: 2px; background: var(--text-tertiary); }
+
+  /* Attainment Table */
+  .attainment-table { width: 100%; border-collapse: collapse; margin-top: 12px; }
+  .attainment-table th { font-size: 11px; text-transform: uppercase; letter-spacing: 0.5px; color: var(--text-tertiary); text-align: left; padding: 10px 12px; border-bottom: 1px solid var(--border); }
+  .attainment-table td { font-size: 13px; padding: 10px 12px; border-bottom: 1px solid var(--border); }
+  .attainment-table td.val { font-weight: 600; }
+  .attainment-table tr.total-row td { font-weight: 700; border-top: 2px solid var(--border); }
+  .att-met { color: var(--green); }
+  .att-partial { color: var(--amber); }
+  .att-missed { color: var(--red); }
+
+  /* Metric Cards */
+  .metrics-grid { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 10px; margin-bottom: 28px; }
+  .metric-card { background: var(--bg-surface); border-radius: var(--radius); padding: 16px 18px; }
+  .metric-label { font-size: 11px; color: var(--text-tertiary); text-transform: uppercase; letter-spacing: 0.6px; margin-bottom: 6px; }
+  .metric-value { font-size: 26px; font-weight: 600; letter-spacing: -1px; }
+  .metric-delta { font-size: 11px; margin-top: 4px; font-weight: 500; }
+  .delta-up { color: var(--green); }
+  .delta-down { color: var(--red); }
+  .delta-neutral { color: var(--text-tertiary); }
+  .metric-sub { font-size: 11px; color: var(--text-tertiary); margin-top: 2px; }
+  .val-green { color: var(--green); }
+
+  /* Monthly Trend Table */
+  .trend-table { width: 100%; border-collapse: collapse; }
+  .trend-table th { font-size: 11px; text-transform: uppercase; letter-spacing: 0.5px; color: var(--text-tertiary); text-align: right; padding: 8px 12px; border-bottom: 1px solid var(--border); }
+  .trend-table th:first-child { text-align: left; }
+  .trend-table td { font-size: 13px; padding: 8px 12px; border-bottom: 1px solid var(--border); text-align: right; }
+  .trend-table td:first-child { text-align: left; font-weight: 500; }
+  .trend-table tr:last-child td { font-weight: 600; border-bottom: 2px solid var(--border); }
+
+  /* Experiment Cards */
+  .exp-card { background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 18px 20px; margin-bottom: 12px; transition: box-shadow 0.15s; }
+  .exp-card:hover { box-shadow: 0 2px 12px rgba(0,0,0,0.04); }
+  .exp-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; }
+  .exp-name { font-size: 15px; font-weight: 500; }
+  .badge { font-size: 10px; padding: 3px 10px; border-radius: 20px; font-weight: 600; letter-spacing: 0.3px; text-transform: uppercase; white-space: nowrap; }
+  .badge-green { background: var(--green-bg); color: var(--green); }
+  .badge-blue { background: var(--blue-bg); color: var(--blue); }
+  .badge-amber { background: var(--amber-bg); color: var(--amber); }
+  .badge-red { background: var(--red-bg); color: var(--red); }
+  .exp-meta { font-size: 12px; color: var(--text-tertiary); margin-bottom: 14px; }
+  .exp-stats { display: grid; grid-template-columns: repeat(6, minmax(0, 1fr)); gap: 6px; }
+  .stat-item { text-align: center; padding: 8px 4px; background: var(--bg-surface); border-radius: 6px; }
+  .stat-val { font-size: 15px; font-weight: 600; letter-spacing: -0.3px; }
+  .stat-label { font-size: 10px; color: var(--text-tertiary); text-transform: uppercase; letter-spacing: 0.4px; margin-top: 2px; }
+
+  /* Lifecycle Table */
+  .lifecycle-table { width: 100%; border-collapse: collapse; }
+  .lifecycle-table th { font-size: 11px; text-transform: uppercase; letter-spacing: 0.5px; color: var(--text-tertiary); text-align: left; padding: 8px 12px; border-bottom: 1px solid var(--border); }
+  .lifecycle-table td { font-size: 13px; padding: 8px 12px; border-bottom: 1px solid var(--border); }
+  .status-active { color: var(--green); font-weight: 600; }
+  .status-paused { color: var(--amber); font-weight: 600; }
+  .status-stopped { color: var(--red); font-weight: 600; }
+
+  /* Budget Utilization */
+  .budget-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; }
+  .budget-card { background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--radius); padding: 16px 18px; }
+  .budget-label { font-size: 12px; color: var(--text-secondary); margin-bottom: 4px; }
+  .budget-value { font-size: 20px; font-weight: 600; }
+  .budget-sub { font-size: 11px; color: var(--text-tertiary); margin-top: 4px; }
+
+  /* Alert Cards */
+  .alert-card { background: var(--red-bg); border-radius: var(--radius); padding: 16px 18px; border-left: 3px solid var(--red); margin-bottom: 10px; }
+  .alert-title { font-size: 13px; font-weight: 600; color: var(--red); margin-bottom: 4px; }
+  .alert-text { font-size: 12px; color: var(--text-secondary); line-height: 1.6; }
+
+  /* Recommendation Cards */
+  .rec-card { background: var(--blue-bg); border-radius: var(--radius); padding: 16px 18px; border-left: 3px solid var(--blue); margin-bottom: 10px; }
+  .rec-title { font-size: 13px; font-weight: 600; color: var(--blue); margin-bottom: 4px; }
+  .rec-text { font-size: 12px; color: var(--text-secondary); line-height: 1.6; }
+
+  /* Key Learnings */
+  .learning-card { background: var(--green-bg); border-radius: var(--radius); padding: 16px 18px; border-left: 3px solid var(--green); margin-bottom: 10px; }
+  .learning-title { font-size: 13px; font-weight: 600; color: var(--green); margin-bottom: 4px; }
+  .learning-text { font-size: 12px; color: var(--text-secondary); line-height: 1.6; }
+
+  /* Decision Log */
+  .log-entry { display: flex; gap: 12px; padding: 10px 0; border-bottom: 1px solid var(--border); }
+  .log-entry:last-child { border-bottom: none; }
+  .log-date { font-size: 12px; color: var(--text-tertiary); min-width: 70px; font-weight: 500; }
+  .log-text { font-size: 12px; color: var(--text-secondary); line-height: 1.5; }
+
+  /* Charts */
+  .chart-wrap { position: relative; width: 100%; height: 300px; background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 18px; margin-bottom: 16px; }
+  .chart-title { font-size: 13px; font-weight: 500; margin-bottom: 12px; }
+  .chart-inner { position: relative; width: 100%; height: 240px; }
+
+  /* Footer */
+  .footer { margin-top: 40px; padding-top: 20px; border-top: 1px solid var(--border); font-size: 11px; color: var(--text-tertiary); text-align: center; }
+
+  @media (max-width: 640px) {
+    .metrics-grid { grid-template-columns: repeat(2, 1fr); }
+    .exp-stats { grid-template-columns: repeat(3, 1fr); }
+    .budget-grid { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<!-- ====== HEADER ====== -->
+<div class="header">
+  <h1>Quarterly Performance Report</h1>
+  <p>Ambient.ai · Metadata.io · {{REPORT_DATE}}</p>
+  <span class="period-badge">Last 90 days: {{PERIOD_START}} — {{PERIOD_END}}</span>
+</div>
+
+<!-- ====== SCORECARD ====== -->
+<div class="section">
+  <div class="section-title">Quarter Scorecard</div>
+  <div class="scorecard">
+    <div class="scorecard-header">
+      <div class="scorecard-title">{{TOTAL_MQLS}} / {{TOTAL_TARGET}} MQLs</div>
+      <span class="scorecard-verdict {{VERDICT_CLASS}}">{{VERDICT_LABEL}}</span>
+    </div>
+
+    <!-- Overall Progress -->
+    <div class="progress-row">
+      <div class="progress-label"><span>Overall</span><span>{{TOTAL_MQLS}}/{{TOTAL_TARGET}} ({{TOTAL_PCT}}%)</span></div>
+      <div class="progress-bar">
+        <div class="progress-fill {{TOTAL_BAR_COLOR}}" style="width: {{TOTAL_PCT}}%"></div>
+        <div class="progress-marker" style="left: {{TIME_PCT}}%" title="{{TIME_PCT}}% of quarter elapsed"></div>
+      </div>
+    </div>
+
+    <!-- LinkedIn Progress -->
+    <div class="progress-row">
+      <div class="progress-label"><span>LinkedIn</span><span>{{LI_MQLS}}/{{LI_TARGET}}</span></div>
+      <div class="progress-bar">
+        <div class="progress-fill {{LI_BAR_COLOR}}" style="width: {{LI_PCT}}%"></div>
+        <div class="progress-marker" style="left: {{TIME_PCT}}%"></div>
+      </div>
+    </div>
+
+    <!-- Google Progress -->
+    <div class="progress-row">
+      <div class="progress-label"><span>Google Ads</span><span>{{G_MQLS}}/{{G_TARGET}}</span></div>
+      <div class="progress-bar">
+        <div class="progress-fill {{G_BAR_COLOR}}" style="width: {{G_PCT}}%"></div>
+        <div class="progress-marker" style="left: {{TIME_PCT}}%"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<hr class="divider">
+
+<!-- ====== MQL ATTAINMENT BY CHANNEL + CTA ====== -->
+<div class="section">
+  <div class="section-title">MQL Attainment — By Channel and CTA</div>
+  <div class="goal-card">
+    <table class="attainment-table">
+      <thead>
+        <tr><th>CTA</th><th>LinkedIn</th><th>Google</th><th>Total</th><th>Target</th><th>Attainment</th></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Demo CTO</td>
+          <td class="val">{{LI_DEMO}}</td>
+          <td class="val">{{G_DEMO}}</td>
+          <td class="val">{{T_DEMO}}</td>
+          <td>8</td>
+          <td class="val {{DEMO_ATT_CLASS}}">{{DEMO_ATT_PCT}}%</td>
+        </tr>
+        <tr>
+          <td>White Paper</td>
+          <td class="val">{{LI_WP}}</td>
+          <td class="val">{{G_WP}}</td>
+          <td class="val">{{T_WP}}</td>
+          <td>4</td>
+          <td class="val {{WP_ATT_CLASS}}">{{WP_ATT_PCT}}%</td>
+        </tr>
+        <tr>
+          <td>Webinar On Demand</td>
+          <td class="val">{{LI_WEB}}</td>
+          <td class="val">{{G_WEB}}</td>
+          <td class="val">{{T_WEB}}</td>
+          <td>6</td>
+          <td class="val {{WEB_ATT_CLASS}}">{{WEB_ATT_PCT}}%</td>
+        </tr>
+        <tr class="total-row">
+          <td>Total</td>
+          <td class="val">{{LI_MQLS}}</td>
+          <td class="val">{{G_MQLS}}</td>
+          <td class="val">{{TOTAL_MQLS}}</td>
+          <td>{{TOTAL_TARGET}}</td>
+          <td class="val {{TOTAL_ATT_CLASS}}">{{TOTAL_ATT_PCT}}%</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<hr class="divider">
+
+<!-- ====== 90-DAY PORTFOLIO SUMMARY ====== -->
+<div class="section">
+  <div class="section-title">90-Day Portfolio Summary</div>
+  <div class="metrics-grid">
+    <div class="metric-card">
+      <div class="metric-label">Total Spend</div>
+      <div class="metric-value">{{TOTAL_SPEND}}</div>
+      <div class="metric-sub">{{SPEND_MONTHLY_AVG}}/month avg</div>
+    </div>
+    <div class="metric-card">
+      <div class="metric-label">Total Leads</div>
+      <div class="metric-value">{{TOTAL_LEADS}}</div>
+      <div class="metric-sub">{{LEADS_MONTHLY_AVG}}/month avg</div>
+    </div>
+    <div class="metric-card">
+      <div class="metric-label">Total MQLs</div>
+      <div class="metric-value val-green">{{TOTAL_MQLS_PERIOD}}</div>
+      <div class="metric-sub">{{MQLS_MONTHLY_AVG}}/month avg</div>
+    </div>
+    <div class="metric-card">
+      <div class="metric-label">Avg CPL</div>
+      <div class="metric-value">{{AVG_CPL}}</div>
+      <div class="metric-sub">Cost per MQL: {{COST_PER_MQL}}</div>
+    </div>
+  </div>
+</div>
+
+<hr class="divider">
+
+<!-- ====== BUDGET UTILIZATION ====== -->
+<div class="section">
+  <div class="section-title">Budget Utilization — Last 90 Days</div>
+  <div class="budget-grid">
+    <div class="budget-card">
+      <div class="budget-label">LinkedIn Spend</div>
+      <div class="budget-value">{{LI_SPEND}}</div>
+      <div class="budget-sub">{{LI_SPEND_PCT}}% of total · {{LI_MONTHLY_AVG}}/month avg</div>
+    </div>
+    <div class="budget-card">
+      <div class="budget-label">Google Ads Spend</div>
+      <div class="budget-value">{{G_SPEND}}</div>
+      <div class="budget-sub">{{G_SPEND_PCT}}% of total · {{G_MONTHLY_AVG}}/month avg</div>
+    </div>
+    <div class="budget-card">
+      <div class="budget-label">LinkedIn CPL</div>
+      <div class="budget-value">{{LI_CPL}}</div>
+      <div class="budget-sub">{{LI_LEADS}} leads · {{LI_MQLS_PERIOD}} MQLs</div>
+    </div>
+    <div class="budget-card">
+      <div class="budget-label">Google Ads CPL</div>
+      <div class="budget-value">{{G_CPL}}</div>
+      <div class="budget-sub">{{G_LEADS}} leads · {{G_MQLS_PERIOD}} MQLs</div>
+    </div>
+  </div>
+</div>
+
+<hr class="divider">
+
+<!-- ====== MONTHLY TREND ====== -->
+<div class="section">
+  <div class="section-title">Monthly Trend — Last 90 Days</div>
+  <div class="goal-card">
+    <table class="trend-table">
+      <thead>
+        <tr><th>Month</th><th>Spend</th><th>Leads</th><th>MQLs</th><th>CPL</th></tr>
+      </thead>
+      <tbody>
+        {{MONTHLY_TREND_ROWS}}
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<hr class="divider">
+
+<!-- ====== EXPERIMENT LIFECYCLE ====== -->
+<div class="section">
+  <div class="section-title">Experiment Lifecycle — 90-Day Summary</div>
+  <div class="goal-card">
+    <table class="lifecycle-table">
+      <thead>
+        <tr><th>Experiment</th><th>Channel</th><th>CTA</th><th>Status</th><th>Spend</th><th>Leads</th><th>MQLs</th><th>CPL</th></tr>
+      </thead>
+      <tbody>
+        {{LIFECYCLE_TABLE_ROWS}}
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<hr class="divider">
+
+<!-- ====== TOP PERFORMERS ====== -->
+<div class="section">
+  <div class="section-title">Top Performers — Last 90 Days</div>
+  {{TOP_EXPERIMENT_CARDS}}
+</div>
+
+<hr class="divider">
+
+<!-- ====== KEY LEARNINGS ====== -->
+<div class="section">
+  <div class="section-title">Key Learnings</div>
+  {{LEARNING_CARDS}}
+</div>
+
+<hr class="divider">
+
+<!-- ====== STRATEGIC RECOMMENDATIONS ====== -->
+<div class="section">
+  <div class="section-title">Strategic Recommendations for Next Quarter</div>
+  {{REC_CARDS}}
+</div>
+
+<hr class="divider">
+
+<!-- ====== DECISION LOG HIGHLIGHTS ====== -->
+<div class="section">
+  <div class="section-title">Decision Log — Key Decisions (Last 90 Days)</div>
+  <div class="goal-card">
+    {{DECISION_LOG_ENTRIES}}
+  </div>
+</div>
+
+<hr class="divider">
+
+<!-- ====== CHARTS ====== -->
+<div class="section">
+  <div class="section-title">Monthly Spend by Channel</div>
+  <div class="chart-wrap">
+    <div class="chart-title">Spend by channel per month over the last 90 days</div>
+    <div class="chart-inner"><canvas id="spendTrendChart"></canvas></div>
+  </div>
+</div>
+
+<div class="section">
+  <div class="section-title">MQL Progress vs Target Pace</div>
+  <div class="chart-wrap">
+    <div class="chart-title">Cumulative MQLs by week vs linear target ({{TOTAL_TARGET}} MQLs by {{QUARTER_END}})</div>
+    <div class="chart-inner"><canvas id="mqlTrendChart"></canvas></div>
+  </div>
+</div>
+
+<div class="section">
+  <div class="section-title">CTA Effectiveness</div>
+  <div class="chart-wrap">
+    <div class="chart-title">MQLs by CTA type — actual vs target</div>
+    <div class="chart-inner"><canvas id="ctaChart"></canvas></div>
+  </div>
+</div>
+
+<!-- ====== FOOTER ====== -->
+<div class="footer">
+  Generated by Ambient.ai Performance Marketing Agent · {{GENERATED_AT}}
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
+<script>
+const isDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+const txtColor = isDark ? '#a0a09a' : '#6b6b6b';
+const gridColor = isDark ? 'rgba(255,255,255,0.06)' : 'rgba(0,0,0,0.06)';
+
+// Monthly Spend Trend (stacked bar by channel)
+const spendTrend = {{SPEND_TREND_DATA}};
+new Chart(document.getElementById('spendTrendChart'), {
+  type: 'bar',
+  data: {
+    labels: spendTrend.months,
+    datasets: [
+      {
+        label: 'LinkedIn',
+        data: spendTrend.linkedin,
+        backgroundColor: '#2563a8',
+        borderRadius: 4,
+        barPercentage: 0.6
+      },
+      {
+        label: 'Google Ads',
+        data: spendTrend.google,
+        backgroundColor: '#1a8a5c',
+        borderRadius: 4,
+        barPercentage: 0.6
+      }
+    ]
+  },
+  options: {
+    responsive: true,
+    maintainAspectRatio: false,
+    plugins: {
+      legend: { position: 'bottom', labels: { color: txtColor, font: { size: 11, family: 'DM Sans' } } }
+    },
+    scales: {
+      x: { stacked: true, grid: { display: false }, ticks: { color: txtColor, font: { size: 11, family: 'DM Sans' } } },
+      y: { stacked: true, grid: { color: gridColor }, ticks: { color: txtColor, font: { size: 11, family: 'DM Sans' }, callback: v => '$' + v.toLocaleString() }, beginAtZero: true }
+    }
+  }
+});
+
+// MQL Trend Chart
+const mqlData = {{MQL_TREND_DATA}};
+new Chart(document.getElementById('mqlTrendChart'), {
+  type: 'line',
+  data: {
+    labels: mqlData.weeks,
+    datasets: [
+      {
+        label: 'Actual MQLs',
+        data: mqlData.actual,
+        borderColor: '#1a8a5c',
+        backgroundColor: 'rgba(26,138,92,0.1)',
+        fill: true,
+        tension: 0.3,
+        pointRadius: 4,
+        pointBackgroundColor: '#1a8a5c'
+      },
+      {
+        label: 'Target Pace',
+        data: mqlData.target,
+        borderColor: '#9a9a9a',
+        borderDash: [6, 4],
+        fill: false,
+        tension: 0,
+        pointRadius: 0
+      }
+    ]
+  },
+  options: {
+    responsive: true,
+    maintainAspectRatio: false,
+    plugins: {
+      legend: { position: 'bottom', labels: { color: txtColor, font: { size: 11, family: 'DM Sans' } } }
+    },
+    scales: {
+      x: { grid: { color: gridColor }, ticks: { color: txtColor, font: { size: 11, family: 'DM Sans' } } },
+      y: { grid: { color: gridColor }, ticks: { color: txtColor, font: { size: 11, family: 'DM Sans' } }, beginAtZero: true }
+    }
+  }
+});
+
+// CTA Effectiveness Chart (grouped bar: actual vs target)
+const ctaData = {{CTA_CHART_DATA}};
+new Chart(document.getElementById('ctaChart'), {
+  type: 'bar',
+  data: {
+    labels: ctaData.labels,
+    datasets: [
+      {
+        label: 'Actual MQLs',
+        data: ctaData.actual,
+        backgroundColor: '#1a8a5c',
+        borderRadius: 4,
+        barPercentage: 0.7
+      },
+      {
+        label: 'Target',
+        data: ctaData.target,
+        backgroundColor: isDark ? '#333330' : '#e8e8e5',
+        borderRadius: 4,
+        barPercentage: 0.7
+      }
+    ]
+  },
+  options: {
+    responsive: true,
+    maintainAspectRatio: false,
+    plugins: {
+      legend: { position: 'bottom', labels: { color: txtColor, font: { size: 11, family: 'DM Sans' } } }
+    },
+    scales: {
+      x: { grid: { display: false }, ticks: { color: txtColor, font: { size: 11, family: 'DM Sans' } } },
+      y: { grid: { color: gridColor }, ticks: { color: txtColor, font: { size: 11, family: 'DM Sans' }, stepSize: 1 }, beginAtZero: true }
+    }
+  }
+});
+</script>
+
+</body>
+</html>
