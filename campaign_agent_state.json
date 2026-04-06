@@ -1,6 +1,6 @@
 {
   "version": "1.0",
-  "lastUpdated": "2026-04-02T10:15:00-07:00",
+  "lastUpdated": "2026-04-06T10:30:00-07:00",
   "goals": {
     "quarter": "Q1_FY27",
     "dateRange": {
@@ -408,9 +408,138 @@
           "issue": "0 credits remaining since Mar 24, now 9 days unresolved"
         }
       ]
+    },
+    {
+      "weekEnding": "2026-04-06",
+      "reportType": "weekly",
+      "portfolio": {
+        "totalSpend": 8264,
+        "totalLeads": 24,
+        "totalMQLs": 8,
+        "avgCPL": 344
+      },
+      "qtd": {
+        "totalSpend": 11734,
+        "totalLeads": 31,
+        "totalMQLs": 9
+      },
+      "byChannel": {
+        "LINKEDIN": {
+          "spend": 6554,
+          "leads": 24,
+          "mqls": 8,
+          "cpl": 273
+        },
+        "GOOGLE_ADS": {
+          "spend": 1710,
+          "leads": 0,
+          "mqls": 0,
+          "cpl": null
+        }
+      },
+      "byChannelQTD": {
+        "LINKEDIN": {
+          "spend": 10024,
+          "leads": 31,
+          "mqls": 9,
+          "cpl": 323
+        },
+        "GOOGLE_ADS": {
+          "spend": 1710,
+          "leads": 0,
+          "mqls": 0,
+          "cpl": null
+        }
+      },
+      "mqlProgress": {
+        "LINKEDIN": {
+          "total": 9,
+          "demo_cto": 0,
+          "white_paper_download": 9,
+          "webinar_on_demand_view": 0
+        },
+        "GOOGLE_ADS": {
+          "total": 0,
+          "demo_cto": 0,
+          "white_paper_download": 0,
+          "webinar_on_demand_view": 0
+        }
+      },
+      "topExperiments": [
+        {
+          "name": "Blueprint WP → Enterprise v6",
+          "experimentId": 1793258,
+          "cpl": 142,
+          "leads": 4,
+          "mqls": 2,
+          "mqlRate": 50
+        },
+        {
+          "name": "Agentic Ops WP → Higher Ed Facilities",
+          "experimentId": 1793310,
+          "cpl": 237,
+          "leads": 3,
+          "mqls": 2,
+          "mqlRate": 66.7
+        },
+        {
+          "name": "Blueprint WP → Campus Police",
+          "experimentId": 1793299,
+          "cpl": 245,
+          "leads": 6,
+          "mqls": 2,
+          "mqlRate": 33.3
+        }
+      ],
+      "watchList": [
+        {
+          "name": "Google Ads LP Failure",
+          "issue": "$1,710 QTD spend, 151 clicks, 0 leads — LP conversion broken"
+        },
+        {
+          "name": "Demo CTO Gap",
+          "issue": "0 campaigns running, 8/18 MQL target uncovered, 24 days left"
+        },
+        {
+          "name": "Pulsar WP sq (1793272)",
+          "issue": "$738 CPL = 2.1x portfolio avg, 0 MQLs"
+        },
+        {
+          "name": "Five Tenets Higher Ed REC (1785652)",
+          "issue": "$1,067 QTD spend, no leads since Mar 4 (33 days)"
+        },
+        {
+          "name": "Credit Balance DENIED",
+          "issue": "0 credits remaining since Mar 24, now 13 days unresolved"
+        }
+      ]
     }
   ],
   "decisionLog": [
+    {
+      "date": "2026-04-06",
+      "action": "30-day lookback report generated — Mar 7–Apr 6",
+      "reason": "QTD: 9/18 MQLs (50%) at 73% of quarter. BEHIND. LinkedIn hit 9/9 target (+1 from Agentic Ops Higher Ed). Google still 0/9. Projected EOQ: ~12 MQLs.",
+      "outcome": "done"
+    },
+    {
+      "date": "2026-04-06",
+      "action": "LinkedIn hits 9/9 MQL target",
+      "reason": "+1 MQL from Agentic Ops WP → Higher Ed (now 2 MQLs). All 9 LinkedIn MQLs from white_paper_download CTA. No demo_cto or webinar MQLs.",
+      "outcome": "done"
+    },
+    {
+      "date": "2026-04-06",
+      "action": "Google Ads LP issue persists — escalated",
+      "reason": "$1,710 QTD spend, 151 clicks, 0 leads. First flagged Apr 1. Dedicated PPC landing pages recommended as highest-leverage fix.",
+      "outcome": "pending"
+    },
+    {
+      "date": "2026-04-06",
+      "action": "Recommended pausing 3 underperformers",
+      "reason": "Pulsar WP sq ($738 CPL), Five Tenets Higher Ed REC ($1,067, 0 leads 33d), Agentic Ops Ent rect ($402, 0 leads). Redirect $120/day to Blueprint WP Ent v6.",
+      "outcome": "pending"
+    },
     {
       "date": "2026-04-02",
       "action": "Weekly report generated — Mar 30–Apr 2",
@@ -424,39 +553,9 @@
       "outcome": "pending"
     },
     {
-      "date": "2026-04-02",
-      "action": "Blueprint WP Campus Police budget bleed identified",
-      "reason": "Experiment 1793299 spent $622.80 in 3 days (Mar 30–Apr 2) for 1 non-MQL lead. Now ACTIVE_WITHOUT_SPEND. High CPL this week at $622.80/lead. Recommend investigating before re-enabling $174/day budget.",
-      "outcome": "pending"
-    },
-    {
-      "date": "2026-04-02",
-      "action": "Pulsar WP sq (1793272) flagged for pause",
-      "reason": "$666.76 QTD spend, 1 lead, 0 MQLs. CPL 2.5x portfolio average. Rectangle variant at $63 CPL this week. Redirect $41/day to rect variant.",
-      "outcome": "pending"
-    },
-    {
-      "date": "2026-04-02",
-      "action": "Slack post sent to #marketing-team",
-      "reason": "Weekly report summary posted. #ext_metadata_ambient skipped (Slack Connect channel — bot script failed, MCP cannot post to external workspaces).",
-      "outcome": "done"
-    },
-    {
       "date": "2026-04-01",
       "action": "Monthly report generated — 30-day window (Mar 2 – Apr 1)",
       "reason": "QTD: 8/18 MQLs (44%) at 67% of quarter. BEHIND pacing. White Paper CTA exceeded target (8/4). Demo CTO remains at 0/8.",
-      "outcome": "done"
-    },
-    {
-      "date": "2026-04-01",
-      "action": "Google Ads experiments detected as restarted",
-      "reason": "EDU-KW and Enterprise Keywords experiments now Active (manual restart). $1,007 combined 30-day spend, 78 clicks, 0 leads.",
-      "outcome": "done"
-    },
-    {
-      "date": "2026-04-01",
-      "action": "8 new experiments added to tracking",
-      "reason": "Discovered experiments not previously in knownExperiments: Blueprint WP → SFDC, Google Ads EDU-KW, Google Ads Enterprise, Five Tenets → Higher Ed SQ, Five Tenets → Ent G2000, Agentic WP → Ent G2000, plus 2 paused LP experiments.",
       "outcome": "done"
     },
     {
@@ -464,18 +563,6 @@
       "action": "Weekly report generated — Mar 23-27",
       "reason": "QTD: 7/18 MQLs (38.9%) at 61.8% of quarter. BEHIND pacing. +1 MQL vs prior week (6→7). Blueprint WP top performer at $66-86 CPL, 100% MQL rate.",
       "outcome": "done"
-    },
-    {
-      "date": "2026-03-27",
-      "action": "BTB Webinar experiments flagged for review",
-      "reason": "$509 QTD spend across 5 experiments, 0 leads after 11 days. Recommended pausing 3 weakest and reallocating to Blueprint WP scaling.",
-      "outcome": "pending"
-    },
-    {
-      "date": "2026-03-27",
-      "action": "Blueprint WP scaling recommended",
-      "reason": "Blueprint WP → Enterprise v6 ($66 CPL, 100% MQL rate) and Campus Police ($86 CPL, 100% MQL rate) are top performers. Recommended increasing daily budget from $74 to $150/day.",
-      "outcome": "pending"
     },
     {
       "date": "2026-03-27",
@@ -492,51 +579,51 @@
   ],
   "alertHistory": [
     {
-      "id": "zero-mqls-week-2026-04-02",
-      "date": "2026-04-02",
-      "type": "zero_mqls_week",
-      "entity": "portfolio",
-      "message": "0 MQLs this week (Mar 30–Apr 2) despite 4 leads. Down from 2 MQLs last week.",
+      "id": "linkedin-target-hit-2026-04-06",
+      "date": "2026-04-06",
+      "type": "milestone",
+      "entity": "LINKEDIN",
+      "message": "LinkedIn hit 9/9 MQL target. +1 MQL from Agentic Ops WP Higher Ed.",
       "acknowledged": false
     },
     {
-      "id": "blueprint-campus-bleed-2026-04-02",
-      "date": "2026-04-02",
-      "type": "budget_bleed",
-      "entity": "1793299",
-      "message": "$622.80 spent in 3 days (Mar 30–Apr 2), 1 non-MQL lead. Now ACTIVE_WITHOUT_SPEND.",
-      "acknowledged": false
-    },
-    {
-      "id": "pulsar-sq-high-cpl-2026-04-02",
-      "date": "2026-04-02",
-      "type": "high_cpl",
-      "entity": "1793272",
-      "message": "$667 CPL = 2.5x portfolio average. 0 MQLs. Recommend pause.",
-      "acknowledged": false
-    },
-    {
-      "id": "cta-gap-demo-2026-w14",
-      "date": "2026-03-27",
-      "type": "cta_gap",
-      "entity": "demo_cto",
-      "message": "No Demo CTO campaigns running. 8/18 MQL target has zero coverage. 28 days left in Q1.",
-      "acknowledged": false
-    },
-    {
-      "id": "google-lp-zero-leads-2026",
-      "date": "2026-04-02",
+      "id": "google-lp-zero-leads-2026-04-06",
+      "date": "2026-04-06",
       "type": "zero_lead_spend",
       "entity": "GOOGLE_ADS",
-      "message": "Google Ads: $1,533 QTD spend, 137 clicks, 0 leads. LP conversion failure confirmed.",
+      "message": "Google Ads: $1,710 QTD spend, 151 clicks, 0 leads. LP conversion failure confirmed. 13 days since first flagged.",
       "acknowledged": false
     },
     {
-      "id": "credit-denied-2026-w14",
-      "date": "2026-03-27",
+      "id": "five-tenets-higher-ed-stale-2026-04-06",
+      "date": "2026-04-06",
+      "type": "zero_lead_spend",
+      "entity": "1785652",
+      "message": "Five Tenets Higher Ed REC: $1,067 QTD spend, no leads since Mar 4 (33 days).",
+      "acknowledged": false
+    },
+    {
+      "id": "pulsar-sq-high-cpl-2026-04-06",
+      "date": "2026-04-06",
+      "type": "high_cpl",
+      "entity": "1793272",
+      "message": "$738 CPL = 2.1x portfolio average. 0 MQLs. Recommend pause.",
+      "acknowledged": false
+    },
+    {
+      "id": "cta-gap-demo-2026-04-06",
+      "date": "2026-04-06",
+      "type": "cta_gap",
+      "entity": "demo_cto",
+      "message": "No Demo CTO campaigns running. 8/18 MQL target has zero coverage. 24 days left in Q1.",
+      "acknowledged": false
+    },
+    {
+      "id": "credit-denied-2026-04-06",
+      "date": "2026-04-06",
       "type": "credit_balance",
       "entity": "pixel_ai_credits",
-      "message": "Credit balance DENIED, 0 remaining. Unresolved since Mar 24 (now 9 days).",
+      "message": "Credit balance DENIED, 0 remaining. Unresolved since Mar 24 (now 13 days).",
       "acknowledged": false
     }
   ],
@@ -548,10 +635,10 @@
         "channel": "LINKEDIN",
         "status": "Active",
         "cta": "white_paper_download",
-        "lifetimeSpend": 327,
+        "lifetimeSpend": 570,
         "lifetimeLeads": 4,
         "lifetimeMQLs": 2,
-        "lastWeekCPL": 82
+        "lastWeekCPL": 142
       },
       "1793299": {
         "name": "Blueprint WP → Campus Police",
@@ -559,10 +646,10 @@
         "channel": "LINKEDIN",
         "status": "ActiveWithoutSpend",
         "cta": "white_paper_download",
-        "lifetimeSpend": 837,
-        "lifetimeLeads": 3,
+        "lifetimeSpend": 1473,
+        "lifetimeLeads": 6,
         "lifetimeMQLs": 2,
-        "lastWeekCPL": 623
+        "lastWeekCPL": 245
       },
       "1793272": {
         "name": "Pulsar WP → Enterprise sq",
@@ -570,10 +657,10 @@
         "channel": "LINKEDIN",
         "status": "Active",
         "cta": "white_paper_download",
-        "lifetimeSpend": 667,
+        "lifetimeSpend": 738,
         "lifetimeLeads": 1,
         "lifetimeMQLs": 0,
-        "lastWeekCPL": 667
+        "lastWeekCPL": 738
       },
       "1793310": {
         "name": "Agentic Ops WP → Higher Ed Facilities",
@@ -581,10 +668,10 @@
         "channel": "LINKEDIN",
         "status": "Active",
         "cta": "white_paper_download",
-        "lifetimeSpend": 537,
+        "lifetimeSpend": 710,
         "lifetimeLeads": 3,
-        "lifetimeMQLs": 1,
-        "lastWeekCPL": 152
+        "lifetimeMQLs": 2,
+        "lastWeekCPL": 237
       },
       "1785667": {
         "name": "Agentic WP → Campus Police",
@@ -592,10 +679,10 @@
         "channel": "LINKEDIN",
         "status": "Active",
         "cta": "white_paper_download",
-        "lifetimeSpend": 785,
+        "lifetimeSpend": 808,
         "lifetimeLeads": 3,
         "lifetimeMQLs": 2,
-        "lastWeekCPL": 262
+        "lastWeekCPL": 269
       },
       "1788223": {
         "name": "Five Tenets → SFDC Higher Ed",
@@ -603,10 +690,10 @@
         "channel": "LINKEDIN",
         "status": "Active",
         "cta": "white_paper_download",
-        "lifetimeSpend": 1042,
+        "lifetimeSpend": 1195,
         "lifetimeLeads": 3,
         "lifetimeMQLs": 0,
-        "lastWeekCPL": 347
+        "lastWeekCPL": 398
       },
       "1785652": {
         "name": "Five Tenets → Higher Ed Facilities REC",
@@ -614,10 +701,10 @@
         "channel": "LINKEDIN",
         "status": "Active",
         "cta": "white_paper_download",
-        "lifetimeSpend": 1006,
+        "lifetimeSpend": 1067,
         "lifetimeLeads": 2,
         "lifetimeMQLs": 0,
-        "lastWeekCPL": 503
+        "lastWeekCPL": 533
       },
       "1785666": {
         "name": "Agentic WP → Higher Ed Facilities REC",
@@ -628,7 +715,7 @@
         "lifetimeSpend": 307,
         "lifetimeLeads": 1,
         "lifetimeMQLs": 1,
-        "lastWeekCPL": 307
+        "lastWeekCPL": 150
       },
       "1793317": {
         "name": "BTB Webinar → Enterprise v6",
@@ -669,10 +756,10 @@
         "channel": "LINKEDIN",
         "status": "Active",
         "cta": "webinar_on_demand_view",
-        "lifetimeSpend": 397,
+        "lifetimeSpend": 602,
         "lifetimeLeads": 1,
         "lifetimeMQLs": 0,
-        "lastWeekCPL": 89
+        "lastWeekCPL": 602
       },
       "1793239": {
         "name": "BTB Webinar → Enterprise sq",
@@ -680,7 +767,7 @@
         "channel": "LINKEDIN",
         "status": "Active",
         "cta": "webinar_on_demand_view",
-        "lifetimeSpend": 64,
+        "lifetimeSpend": 89,
         "lifetimeLeads": 0,
         "lifetimeMQLs": 0,
         "lastWeekCPL": null
@@ -757,7 +844,7 @@
         "channel": "LINKEDIN",
         "status": "Active",
         "cta": "white_paper_download",
-        "lifetimeSpend": 240,
+        "lifetimeSpend": 402,
         "lifetimeLeads": 0,
         "lifetimeMQLs": 0,
         "lastWeekCPL": null
@@ -782,7 +869,7 @@
         "lifetimeSpend": 63,
         "lifetimeLeads": 1,
         "lifetimeMQLs": 0,
-        "lastWeekCPL": 28
+        "lastWeekCPL": 63
       },
       "1793257": {
         "name": "Blueprint WP → Enterprise rect",
@@ -814,7 +901,7 @@
         "channel": "GOOGLE_ADS",
         "status": "Active",
         "cta": "other",
-        "lifetimeSpend": 791,
+        "lifetimeSpend": 880,
         "lifetimeLeads": 0,
         "lifetimeMQLs": 0,
         "lastWeekCPL": null
@@ -825,7 +912,7 @@
         "channel": "GOOGLE_ADS",
         "status": "Active",
         "cta": "other",
-        "lifetimeSpend": 742,
+        "lifetimeSpend": 830,
         "lifetimeLeads": 0,
         "lifetimeMQLs": 0,
         "lastWeekCPL": null
@@ -839,7 +926,7 @@
         "lifetimeSpend": 369,
         "lifetimeLeads": 1,
         "lifetimeMQLs": 0,
-        "lastWeekCPL": 369
+        "lastWeekCPL": 235
       },
       "1785647": {
         "name": "Five Tenets → Enterprise G2000",
@@ -850,7 +937,7 @@
         "lifetimeSpend": 445,
         "lifetimeLeads": 1,
         "lifetimeMQLs": 0,
-        "lastWeekCPL": 445
+        "lastWeekCPL": 226
       },
       "1785662": {
         "name": "Agentic WP → Enterprise G2000",

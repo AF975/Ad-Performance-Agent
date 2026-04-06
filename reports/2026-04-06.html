@@ -1,0 +1,667 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>30-Day Performance Report — Apr 6, 2026</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #fafaf9;
+    --bg-card: #ffffff;
+    --bg-surface: #f3f3f1;
+    --text-primary: #1a1a1a;
+    --text-secondary: #6b6b6b;
+    --text-tertiary: #9a9a9a;
+    --border: #e8e8e5;
+    --green: #1a8a5c;
+    --green-bg: #edf7f1;
+    --red: #c93a3a;
+    --red-bg: #fceeed;
+    --blue: #2563a8;
+    --blue-bg: #eef4fb;
+    --amber: #b07317;
+    --amber-bg: #fdf4e7;
+    --radius: 10px;
+    --radius-lg: 14px;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --bg: #141413;
+      --bg-card: #1e1e1c;
+      --bg-surface: #252524;
+      --text-primary: #e8e8e4;
+      --text-secondary: #a0a09a;
+      --text-tertiary: #6b6b66;
+      --border: #333330;
+      --green-bg: #162e22;
+      --red-bg: #2e1616;
+      --blue-bg: #162030;
+      --amber-bg: #2e2416;
+    }
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'DM Sans', sans-serif; background: var(--bg); color: var(--text-primary); padding: 32px 24px; max-width: 900px; margin: 0 auto; }
+
+  /* Header */
+  .header { margin-bottom: 32px; }
+  .header h1 { font-size: 22px; font-weight: 600; letter-spacing: -0.5px; margin-bottom: 4px; }
+  .header p { font-size: 13px; color: var(--text-secondary); }
+
+  /* Sections */
+  .section { margin-bottom: 28px; }
+  .section-title { font-size: 14px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.8px; color: var(--text-tertiary); margin-bottom: 14px; }
+  .divider { border: none; border-top: 1px solid var(--border); margin: 28px 0; }
+
+  /* Goal Tracker */
+  .goal-card { background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 20px 24px; margin-bottom: 12px; }
+  .goal-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; }
+  .goal-title { font-size: 18px; font-weight: 600; }
+  .goal-pacing { font-size: 12px; font-weight: 600; padding: 4px 12px; border-radius: 20px; }
+  .pacing-on-track { background: var(--green-bg); color: var(--green); }
+  .pacing-behind { background: var(--amber-bg); color: var(--amber); }
+  .pacing-at-risk { background: var(--red-bg); color: var(--red); }
+
+  .progress-row { margin-bottom: 12px; }
+  .progress-label { display: flex; justify-content: space-between; font-size: 12px; margin-bottom: 4px; }
+  .progress-label span:first-child { color: var(--text-secondary); font-weight: 500; }
+  .progress-label span:last-child { color: var(--text-primary); font-weight: 600; }
+  .progress-bar { height: 8px; background: var(--bg-surface); border-radius: 4px; overflow: hidden; position: relative; }
+  .progress-fill { height: 100%; border-radius: 4px; transition: width 0.3s; }
+  .progress-fill.green { background: var(--green); }
+  .progress-fill.amber { background: var(--amber); }
+  .progress-fill.red { background: var(--red); }
+  .progress-marker { position: absolute; top: -2px; height: 12px; width: 2px; background: var(--text-tertiary); }
+
+  /* CTA Table */
+  .cta-table { width: 100%; border-collapse: collapse; margin-top: 12px; }
+  .cta-table th { font-size: 11px; text-transform: uppercase; letter-spacing: 0.5px; color: var(--text-tertiary); text-align: left; padding: 8px 12px; border-bottom: 1px solid var(--border); }
+  .cta-table td { font-size: 13px; padding: 8px 12px; border-bottom: 1px solid var(--border); }
+  .cta-table td.val { font-weight: 600; }
+
+  /* Metric Cards */
+  .metrics-grid { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 10px; margin-bottom: 28px; }
+  .metric-card { background: var(--bg-surface); border-radius: var(--radius); padding: 16px 18px; }
+  .metric-label { font-size: 11px; color: var(--text-tertiary); text-transform: uppercase; letter-spacing: 0.6px; margin-bottom: 6px; }
+  .metric-value { font-size: 26px; font-weight: 600; letter-spacing: -1px; }
+  .metric-delta { font-size: 11px; margin-top: 4px; font-weight: 500; }
+  .delta-up { color: var(--green); }
+  .delta-down { color: var(--red); }
+  .delta-neutral { color: var(--text-tertiary); }
+  .metric-sub { font-size: 11px; color: var(--text-tertiary); margin-top: 2px; }
+
+  /* Experiment Cards */
+  .exp-card { background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 18px 20px; margin-bottom: 12px; transition: box-shadow 0.15s; }
+  .exp-card:hover { box-shadow: 0 2px 12px rgba(0,0,0,0.04); }
+  .exp-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; }
+  .exp-name { font-size: 15px; font-weight: 500; }
+  .badge { font-size: 10px; padding: 3px 10px; border-radius: 20px; font-weight: 600; letter-spacing: 0.3px; text-transform: uppercase; white-space: nowrap; }
+  .badge-green { background: var(--green-bg); color: var(--green); }
+  .badge-blue { background: var(--blue-bg); color: var(--blue); }
+  .badge-amber { background: var(--amber-bg); color: var(--amber); }
+  .badge-red { background: var(--red-bg); color: var(--red); }
+  .exp-meta { font-size: 12px; color: var(--text-tertiary); margin-bottom: 14px; }
+  .exp-stats { display: grid; grid-template-columns: repeat(6, minmax(0, 1fr)); gap: 6px; }
+  .stat-item { text-align: center; padding: 8px 4px; background: var(--bg-surface); border-radius: 6px; }
+  .stat-val { font-size: 15px; font-weight: 600; letter-spacing: -0.3px; }
+  .stat-label { font-size: 10px; color: var(--text-tertiary); text-transform: uppercase; letter-spacing: 0.4px; margin-top: 2px; }
+  .val-green { color: var(--green); }
+  .val-red { color: var(--red); }
+
+  /* Alert Cards */
+  .alert-card { background: var(--red-bg); border-radius: var(--radius); padding: 16px 18px; border-left: 3px solid var(--red); margin-bottom: 10px; }
+  .alert-title { font-size: 13px; font-weight: 600; color: var(--red); margin-bottom: 4px; }
+  .alert-text { font-size: 12px; color: var(--text-secondary); line-height: 1.6; }
+
+  /* Recommendation Cards */
+  .rec-card { background: var(--blue-bg); border-radius: var(--radius); padding: 16px 18px; border-left: 3px solid var(--blue); margin-bottom: 10px; }
+  .rec-title { font-size: 13px; font-weight: 600; color: var(--blue); margin-bottom: 4px; }
+  .rec-text { font-size: 12px; color: var(--text-secondary); line-height: 1.6; }
+
+  /* Decision Log */
+  .log-entry { display: flex; gap: 12px; padding: 10px 0; border-bottom: 1px solid var(--border); }
+  .log-entry:last-child { border-bottom: none; }
+  .log-date { font-size: 12px; color: var(--text-tertiary); min-width: 70px; font-weight: 500; }
+  .log-text { font-size: 12px; color: var(--text-secondary); line-height: 1.5; }
+
+  /* Charts */
+  .chart-wrap { position: relative; width: 100%; height: 300px; background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 18px; margin-bottom: 16px; }
+  .chart-title { font-size: 13px; font-weight: 500; margin-bottom: 12px; }
+  .chart-inner { position: relative; width: 100%; height: 240px; }
+
+  /* Google Card */
+  .google-card { background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 18px 20px; }
+  .google-stats { font-size: 13px; color: var(--text-secondary); margin: 8px 0; }
+  .google-note { font-size: 12px; color: var(--text-secondary); line-height: 1.6; margin-top: 10px; }
+
+  /* Footer */
+  .footer { margin-top: 40px; padding-top: 20px; border-top: 1px solid var(--border); font-size: 11px; color: var(--text-tertiary); text-align: center; }
+
+  @media (max-width: 640px) {
+    .metrics-grid { grid-template-columns: repeat(2, 1fr); }
+    .exp-stats { grid-template-columns: repeat(3, 1fr); }
+  }
+</style>
+</head>
+<body>
+
+<!-- ====== HEADER ====== -->
+<div class="header">
+  <h1>30-Day Performance Report</h1>
+  <p>Ambient.ai · Metadata.io · Mar 7 – Apr 6, 2026</p>
+</div>
+
+<!-- ====== GOAL TRACKER ====== -->
+<div class="section">
+  <div class="section-title">Q1 FY27 MQL Goal Tracker</div>
+  <div class="goal-card">
+    <div class="goal-header">
+      <div class="goal-title">9 / 18 MQLs</div>
+      <span class="goal-pacing pacing-behind">BEHIND</span>
+    </div>
+
+    <!-- Overall Progress -->
+    <div class="progress-row">
+      <div class="progress-label"><span>Overall</span><span>9/18 (50%)</span></div>
+      <div class="progress-bar">
+        <div class="progress-fill amber" style="width: 50%"></div>
+        <div class="progress-marker" style="left: 73%" title="73% of quarter elapsed"></div>
+      </div>
+    </div>
+
+    <!-- LinkedIn Progress -->
+    <div class="progress-row">
+      <div class="progress-label"><span>LinkedIn</span><span>9/9 — TARGET HIT</span></div>
+      <div class="progress-bar">
+        <div class="progress-fill green" style="width: 100%"></div>
+        <div class="progress-marker" style="left: 73%"></div>
+      </div>
+    </div>
+
+    <!-- Google Progress -->
+    <div class="progress-row">
+      <div class="progress-label"><span>Google Ads</span><span>0/9</span></div>
+      <div class="progress-bar">
+        <div class="progress-fill red" style="width: 0%"></div>
+        <div class="progress-marker" style="left: 73%"></div>
+      </div>
+    </div>
+
+    <!-- CTA Breakdown Table -->
+    <table class="cta-table">
+      <thead>
+        <tr><th>CTA</th><th>LinkedIn</th><th>Google</th><th>Total</th></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Demo CTO</td>
+          <td class="val">0/4</td>
+          <td class="val">0/4</td>
+          <td class="val">0/8</td>
+        </tr>
+        <tr>
+          <td>White Paper Download</td>
+          <td class="val" style="color:var(--green)">9/2</td>
+          <td class="val">0/2</td>
+          <td class="val" style="color:var(--green)">9/4</td>
+        </tr>
+        <tr>
+          <td>Webinar On Demand</td>
+          <td class="val">0/3</td>
+          <td class="val">0/3</td>
+          <td class="val">0/6</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<hr class="divider">
+
+<!-- ====== PORTFOLIO SUMMARY ====== -->
+<div class="section">
+  <div class="section-title">Portfolio Summary — Mar 7 to Apr 6 (30 days)</div>
+  <div class="metrics-grid">
+    <div class="metric-card">
+      <div class="metric-label">Spend</div>
+      <div class="metric-value">$8,264</div>
+      <div class="metric-delta delta-neutral">+14% vs prev monthly</div>
+    </div>
+    <div class="metric-card">
+      <div class="metric-label">Leads</div>
+      <div class="metric-value">24</div>
+      <div class="metric-delta delta-up">+4% vs prev monthly</div>
+    </div>
+    <div class="metric-card">
+      <div class="metric-label">MQLs</div>
+      <div class="metric-value val-green">8</div>
+      <div class="metric-delta delta-neutral">0% vs prev monthly</div>
+    </div>
+    <div class="metric-card">
+      <div class="metric-label">CPL</div>
+      <div class="metric-value">$344</div>
+      <div class="metric-delta delta-down">+9% vs prev monthly</div>
+      <div class="metric-sub">Credits: DENIED (0 remaining)</div>
+    </div>
+  </div>
+</div>
+
+<hr class="divider">
+
+<!-- ====== LINKEDIN EXPERIMENTS ====== -->
+<div class="section">
+  <div class="section-title">LinkedIn Experiments — Ranked by Efficiency (30-day)</div>
+
+  <div class="exp-card">
+    <div class="exp-header">
+      <div class="exp-name">Pulsar WP → Enterprise rect</div>
+      <span class="badge badge-blue">Generating leads</span>
+    </div>
+    <div class="exp-meta">Ambient - Inside Ambient Pulsar WP - Enterprise · Started Mar 16 · Budget: $40/day</div>
+    <div class="exp-stats">
+      <div class="stat-item"><div class="stat-val">$63</div><div class="stat-label">Spend</div></div>
+      <div class="stat-item"><div class="stat-val val-green">$63</div><div class="stat-label">CPL</div></div>
+      <div class="stat-item"><div class="stat-val">1</div><div class="stat-label">Leads</div></div>
+      <div class="stat-item"><div class="stat-val">0</div><div class="stat-label">MQLs</div></div>
+      <div class="stat-item"><div class="stat-val">0.57%</div><div class="stat-label">CTR</div></div>
+      <div class="stat-item"><div class="stat-val">0%</div><div class="stat-label">MQL rate</div></div>
+    </div>
+  </div>
+
+  <div class="exp-card">
+    <div class="exp-header">
+      <div class="exp-name">Blueprint WP → Enterprise v6</div>
+      <span class="badge badge-green">Top performer</span>
+    </div>
+    <div class="exp-meta">Ambient - Practical Blueprint WP - Enterprise · Started Mar 16 · Budget: $40/day</div>
+    <div class="exp-stats">
+      <div class="stat-item"><div class="stat-val">$570</div><div class="stat-label">Spend</div></div>
+      <div class="stat-item"><div class="stat-val val-green">$142</div><div class="stat-label">CPL</div></div>
+      <div class="stat-item"><div class="stat-val">4</div><div class="stat-label">Leads</div></div>
+      <div class="stat-item"><div class="stat-val val-green">2</div><div class="stat-label">MQLs</div></div>
+      <div class="stat-item"><div class="stat-val">0.73%</div><div class="stat-label">CTR</div></div>
+      <div class="stat-item"><div class="stat-val val-green">50%</div><div class="stat-label">MQL rate</div></div>
+    </div>
+  </div>
+
+  <div class="exp-card">
+    <div class="exp-header">
+      <div class="exp-name">Agentic WP → Higher Ed REC</div>
+      <span class="badge badge-green">Converting</span>
+    </div>
+    <div class="exp-meta">Agentic Physical Security - Ent/Gov/Edu_LGF · Started Feb 24 · Paused</div>
+    <div class="exp-stats">
+      <div class="stat-item"><div class="stat-val">$150</div><div class="stat-label">Spend</div></div>
+      <div class="stat-item"><div class="stat-val val-green">$150</div><div class="stat-label">CPL</div></div>
+      <div class="stat-item"><div class="stat-val">1</div><div class="stat-label">Leads</div></div>
+      <div class="stat-item"><div class="stat-val val-green">1</div><div class="stat-label">MQLs</div></div>
+      <div class="stat-item"><div class="stat-val">0.60%</div><div class="stat-label">CTR</div></div>
+      <div class="stat-item"><div class="stat-val val-green">100%</div><div class="stat-label">MQL rate</div></div>
+    </div>
+  </div>
+
+  <div class="exp-card">
+    <div class="exp-header">
+      <div class="exp-name">Agentic Ops WP → Higher Ed Facilities</div>
+      <span class="badge badge-green">Converting</span>
+    </div>
+    <div class="exp-meta">Ambient - Agentic Ops WP - Education · Started Mar 16 · Budget: $40/day</div>
+    <div class="exp-stats">
+      <div class="stat-item"><div class="stat-val">$710</div><div class="stat-label">Spend</div></div>
+      <div class="stat-item"><div class="stat-val">$237</div><div class="stat-label">CPL</div></div>
+      <div class="stat-item"><div class="stat-val">3</div><div class="stat-label">Leads</div></div>
+      <div class="stat-item"><div class="stat-val val-green">2</div><div class="stat-label">MQLs</div></div>
+      <div class="stat-item"><div class="stat-val">0.59%</div><div class="stat-label">CTR</div></div>
+      <div class="stat-item"><div class="stat-val val-green">67%</div><div class="stat-label">MQL rate</div></div>
+    </div>
+  </div>
+
+  <div class="exp-card">
+    <div class="exp-header">
+      <div class="exp-name">Blueprint WP → Campus Police</div>
+      <span class="badge badge-green">Converting</span>
+    </div>
+    <div class="exp-meta">Ambient - Practical Blueprint WP - Education · Started Mar 16 · Budget: $174/day · Active Without Spend</div>
+    <div class="exp-stats">
+      <div class="stat-item"><div class="stat-val">$1,473</div><div class="stat-label">Spend</div></div>
+      <div class="stat-item"><div class="stat-val">$245</div><div class="stat-label">CPL</div></div>
+      <div class="stat-item"><div class="stat-val">6</div><div class="stat-label">Leads</div></div>
+      <div class="stat-item"><div class="stat-val val-green">2</div><div class="stat-label">MQLs</div></div>
+      <div class="stat-item"><div class="stat-val">0.49%</div><div class="stat-label">CTR</div></div>
+      <div class="stat-item"><div class="stat-val">33%</div><div class="stat-label">MQL rate</div></div>
+    </div>
+  </div>
+
+  <div class="exp-card">
+    <div class="exp-header">
+      <div class="exp-name">Agentic WP → Campus Police</div>
+      <span class="badge badge-green">Converting</span>
+    </div>
+    <div class="exp-meta">Agentic Physical Security - Ent/Gov/Edu_LGF · Started Feb 24 · Budget: $40/day</div>
+    <div class="exp-stats">
+      <div class="stat-item"><div class="stat-val">$591</div><div class="stat-label">Spend</div></div>
+      <div class="stat-item"><div class="stat-val">$296</div><div class="stat-label">CPL</div></div>
+      <div class="stat-item"><div class="stat-val">2</div><div class="stat-label">Leads</div></div>
+      <div class="stat-item"><div class="stat-val val-green">1</div><div class="stat-label">MQLs</div></div>
+      <div class="stat-item"><div class="stat-val">0.61%</div><div class="stat-label">CTR</div></div>
+      <div class="stat-item"><div class="stat-val val-green">50%</div><div class="stat-label">MQL rate</div></div>
+    </div>
+  </div>
+
+  <div class="exp-card">
+    <div class="exp-header">
+      <div class="exp-name">Five Tenets → SFDC Higher Ed</div>
+      <span class="badge badge-amber">Watch</span>
+    </div>
+    <div class="exp-meta">Five Tenets - Education_LGF_SFDC_prospects · Started Mar 5 · Budget: $40/day</div>
+    <div class="exp-stats">
+      <div class="stat-item"><div class="stat-val">$1,195</div><div class="stat-label">Spend</div></div>
+      <div class="stat-item"><div class="stat-val val-red">$398</div><div class="stat-label">CPL</div></div>
+      <div class="stat-item"><div class="stat-val">3</div><div class="stat-label">Leads</div></div>
+      <div class="stat-item"><div class="stat-val">0</div><div class="stat-label">MQLs</div></div>
+      <div class="stat-item"><div class="stat-val">0.84%</div><div class="stat-label">CTR</div></div>
+      <div class="stat-item"><div class="stat-val">0%</div><div class="stat-label">MQL rate</div></div>
+    </div>
+  </div>
+
+  <div class="exp-card">
+    <div class="exp-header">
+      <div class="exp-name">Five Tenets → Higher Ed Facilities REC</div>
+      <span class="badge badge-amber">Watch</span>
+    </div>
+    <div class="exp-meta">Five Tenets - Enterprise & Education_LGF · Started Feb 24 · Budget: $40/day · No leads since Mar 4</div>
+    <div class="exp-stats">
+      <div class="stat-item"><div class="stat-val">$1,067</div><div class="stat-label">Spend QTD</div></div>
+      <div class="stat-item"><div class="stat-val val-red">$533</div><div class="stat-label">CPL</div></div>
+      <div class="stat-item"><div class="stat-val">2</div><div class="stat-label">Leads QTD</div></div>
+      <div class="stat-item"><div class="stat-val">0</div><div class="stat-label">MQLs</div></div>
+      <div class="stat-item"><div class="stat-val">0.52%</div><div class="stat-label">CTR</div></div>
+      <div class="stat-item"><div class="stat-val">0%</div><div class="stat-label">MQL rate</div></div>
+    </div>
+  </div>
+
+  <div class="exp-card">
+    <div class="exp-header">
+      <div class="exp-name">BTB Webinar → SFDC Higher Ed</div>
+      <span class="badge badge-amber">Watch</span>
+    </div>
+    <div class="exp-meta">Ambient - Beyond the Buzzwords Webinar - Education · Started Mar 16 · Budget: $40/day</div>
+    <div class="exp-stats">
+      <div class="stat-item"><div class="stat-val">$602</div><div class="stat-label">Spend</div></div>
+      <div class="stat-item"><div class="stat-val val-red">$602</div><div class="stat-label">CPL</div></div>
+      <div class="stat-item"><div class="stat-val">1</div><div class="stat-label">Leads</div></div>
+      <div class="stat-item"><div class="stat-val">0</div><div class="stat-label">MQLs</div></div>
+      <div class="stat-item"><div class="stat-val">0.61%</div><div class="stat-label">CTR</div></div>
+      <div class="stat-item"><div class="stat-val">0%</div><div class="stat-label">MQL rate</div></div>
+    </div>
+  </div>
+
+  <div class="exp-card">
+    <div class="exp-header">
+      <div class="exp-name">Pulsar WP → Enterprise sq</div>
+      <span class="badge badge-red">Alert</span>
+    </div>
+    <div class="exp-meta">Ambient - Inside Ambient Pulsar WP - Enterprise · Started Mar 16 · Budget: $40/day</div>
+    <div class="exp-stats">
+      <div class="stat-item"><div class="stat-val">$738</div><div class="stat-label">Spend</div></div>
+      <div class="stat-item"><div class="stat-val val-red">$738</div><div class="stat-label">CPL</div></div>
+      <div class="stat-item"><div class="stat-val">1</div><div class="stat-label">Leads</div></div>
+      <div class="stat-item"><div class="stat-val">0</div><div class="stat-label">MQLs</div></div>
+      <div class="stat-item"><div class="stat-val">1.00%</div><div class="stat-label">CTR</div></div>
+      <div class="stat-item"><div class="stat-val">0%</div><div class="stat-label">MQL rate</div></div>
+    </div>
+  </div>
+
+  <div class="exp-card">
+    <div class="exp-header">
+      <div class="exp-name">Agentic Ops WP → Enterprise rect</div>
+      <span class="badge badge-red">Alert</span>
+    </div>
+    <div class="exp-meta">Ambient - Agentic Ops WP - Enterprise · Started Mar 16 · Budget: $40/day · 0 leads</div>
+    <div class="exp-stats">
+      <div class="stat-item"><div class="stat-val">$402</div><div class="stat-label">Spend</div></div>
+      <div class="stat-item"><div class="stat-val val-red">N/A</div><div class="stat-label">CPL</div></div>
+      <div class="stat-item"><div class="stat-val val-red">0</div><div class="stat-label">Leads</div></div>
+      <div class="stat-item"><div class="stat-val">0</div><div class="stat-label">MQLs</div></div>
+      <div class="stat-item"><div class="stat-val">0.58%</div><div class="stat-label">CTR</div></div>
+      <div class="stat-item"><div class="stat-val">0%</div><div class="stat-label">MQL rate</div></div>
+    </div>
+  </div>
+
+  <div class="exp-card">
+    <div class="exp-header">
+      <div class="exp-name">BTB Webinar → Enterprise sq</div>
+      <span class="badge badge-blue">New</span>
+    </div>
+    <div class="exp-meta">Ambient - Beyond the Buzzwords Webinar - Enterprise · Started Mar 16 · Budget: $40/day</div>
+    <div class="exp-stats">
+      <div class="stat-item"><div class="stat-val">$89</div><div class="stat-label">Spend</div></div>
+      <div class="stat-item"><div class="stat-val">N/A</div><div class="stat-label">CPL</div></div>
+      <div class="stat-item"><div class="stat-val">0</div><div class="stat-label">Leads</div></div>
+      <div class="stat-item"><div class="stat-val">0</div><div class="stat-label">MQLs</div></div>
+      <div class="stat-item"><div class="stat-val">1.15%</div><div class="stat-label">CTR</div></div>
+      <div class="stat-item"><div class="stat-val">0%</div><div class="stat-label">MQL rate</div></div>
+    </div>
+  </div>
+
+</div>
+
+<hr class="divider">
+
+<!-- ====== GOOGLE ADS ====== -->
+<div class="section">
+  <div class="section-title">Google Ads</div>
+  <div class="google-card">
+    <div class="exp-header">
+      <div class="exp-name">Google Ads — 2 Active Campaigns</div>
+      <span class="badge badge-red">0 Leads</span>
+    </div>
+    <div class="google-stats">
+      <strong>QTD Total:</strong> $1,710 spend · 151 clicks · 3,731 impressions · 4.05% CTR · <strong style="color:var(--red)">0 leads · 0 MQLs</strong>
+    </div>
+    <div class="google-stats">
+      <strong>EDU-KW:</strong> $880 spend · 77 clicks · 0 leads<br>
+      <strong>Enterprise Keywords:</strong> $830 spend · 74 clicks · 0 leads
+    </div>
+    <div class="google-note">
+      <strong style="color:var(--red)">Landing page conversion failure confirmed.</strong> 151 clicks at $11.32 avg CPC with 0% conversion rate.
+      Top spending keywords: "schools security" ($202), "alert system for schools" ($183), "school safety technology" ($170).
+      All clicks are reaching the LP but not converting. Dedicated PPC landing pages with shorter forms are urgently needed.
+    </div>
+  </div>
+</div>
+
+<hr class="divider">
+
+<!-- ====== ISSUES FLAGGED ====== -->
+<div class="section">
+  <div class="section-title">Issues Flagged</div>
+
+  <div class="alert-card">
+    <div class="alert-title">Google Ads: $1,710 Spend, 0 Leads — LP Conversion Failure</div>
+    <div class="alert-text">Both Google campaigns (EDU-KW + Enterprise) have spent $1,710 QTD with 151 clicks and 0 leads. 4.05% CTR indicates ads are relevant, but LP conversion is completely broken. This represents $1,710 in wasted spend and 0/9 Google MQL progress.</div>
+  </div>
+
+  <div class="alert-card">
+    <div class="alert-title">Demo CTO: 0/8 MQL Target — No Campaigns Running</div>
+    <div class="alert-text">Demo CTO accounts for 44% of the total MQL target (8/18) but has zero active campaigns. With only 24 days remaining in Q1, this gap is the single largest risk to hitting the quarterly target. Without Demo CTO campaigns, max achievable MQLs from current CTAs is capped.</div>
+  </div>
+
+  <div class="alert-card">
+    <div class="alert-title">Pulsar WP sq: $738 CPL — 2.1x Portfolio Average</div>
+    <div class="alert-text">Experiment 1793272 has spent $738 for 1 lead and 0 MQLs. CPL is 2.1x the portfolio average of $344. The rect variant of the same campaign has $63 CPL. Recommend pausing sq variant and redirecting budget to rect.</div>
+  </div>
+
+  <div class="alert-card">
+    <div class="alert-title">Five Tenets Higher Ed REC: No Leads in 33 Days</div>
+    <div class="alert-text">Experiment 1785652 has spent $1,067 QTD with its last lead on Mar 4 (33 days ago). Still actively spending $40/day with no conversions. This is $1,320 projected waste by quarter end if not paused.</div>
+  </div>
+
+  <div class="alert-card">
+    <div class="alert-title">Credit Balance: DENIED — 13 Days Unresolved</div>
+    <div class="alert-text">Pixel AI credit balance has been at 0 with DENIED status since Mar 24. This may be affecting experiment optimization features. Needs escalation to Metadata.io support.</div>
+  </div>
+
+</div>
+
+<hr class="divider">
+
+<!-- ====== RECOMMENDATIONS ====== -->
+<div class="section">
+  <div class="section-title">Recommendations</div>
+
+  <div class="rec-card">
+    <div class="rec-title">1. Fix Google Ads Landing Pages — Potential 9 MQLs at Stake</div>
+    <div class="rec-text">Create dedicated PPC landing pages for both EDU-KW and Enterprise campaigns with shortened forms (name + email only). Current ambient.ai website pages have multi-field forms designed for organic traffic. A PPC-optimized page at even 5% conversion rate on 151 clicks would yield ~8 leads. This is the single highest-leverage action for hitting 18 MQLs.</div>
+  </div>
+
+  <div class="rec-card">
+    <div class="rec-title">2. Launch Demo CTO Campaigns This Week — 0/8 Target, 24 Days Left</div>
+    <div class="rec-text">Demo CTO is 44% of the MQL target with zero coverage. Create BOFU demo request campaigns targeting accounts that have already engaged with white paper content. Use the Campus Police and Enterprise audiences that are converting well on WP offers. Even 2-3 demo MQLs would significantly improve overall pacing.</div>
+  </div>
+
+  <div class="rec-card">
+    <div class="rec-title">3. Pause 3 Underperformers, Redirect $120/day to Blueprint WP Ent v6</div>
+    <div class="rec-text">Pause: Pulsar WP sq ($738 CPL, 0 MQLs), Five Tenets Higher Ed REC ($1,067, 0 leads in 33d), Agentic Ops Ent rect ($402, 0 leads). Combined $120/day savings. Scale Blueprint WP Ent v6 from $40 to $120/day — it has the best CPL ($142), 50% MQL rate, and is the only Enterprise experiment consistently converting.</div>
+  </div>
+
+  <div class="rec-card">
+    <div class="rec-title">4. Consider Reactivating Agentic WP Higher Ed REC</div>
+    <div class="rec-text">This paused experiment (1785666) had 100% MQL rate and $150 CPL in the 30-day window. It was paused but is one of only 5 MQL-producing experiments. Restarting it at $40/day could add incremental MQLs to the webinar/WP pipeline at efficient CPL.</div>
+  </div>
+
+</div>
+
+<hr class="divider">
+
+<!-- ====== DECISION LOG ====== -->
+<div class="section">
+  <div class="section-title">Decision Log — This Period</div>
+  <div class="goal-card">
+    <div class="log-entry">
+      <div class="log-date">Apr 6</div>
+      <div class="log-text"><strong>LinkedIn hits 9/9 MQL target.</strong> +1 MQL from Agentic Ops WP → Higher Ed (now 2 MQLs, up from 1). All 9 LinkedIn MQLs are from white paper download CTA.</div>
+    </div>
+    <div class="log-entry">
+      <div class="log-date">Apr 6</div>
+      <div class="log-text"><strong>Overall pacing: BEHIND.</strong> 9/18 MQLs (50%) at 73% of quarter. Projected EOQ: ~12 MQLs. Need 9 more MQLs in 24 days to hit target.</div>
+    </div>
+    <div class="log-entry">
+      <div class="log-date">Apr 6</div>
+      <div class="log-text"><strong>Google Ads LP issue persists.</strong> Now $1,710 QTD spend, 151 clicks, 0 leads. First flagged Apr 1. Landing page conversion fix is critical path to hitting goal.</div>
+    </div>
+    <div class="log-entry">
+      <div class="log-date">Apr 2</div>
+      <div class="log-text">Blueprint WP Campus Police budget bleed: $623 in 3 days for 1 non-MQL lead. Now ACTIVE_WITHOUT_SPEND. Monitoring.</div>
+    </div>
+    <div class="log-entry">
+      <div class="log-date">Apr 2</div>
+      <div class="log-text">Pulsar WP sq flagged for pause: $667 CPL (now $738), 2.1x portfolio average. Rect variant at $63 CPL outperforming.</div>
+    </div>
+    <div class="log-entry">
+      <div class="log-date">Mar 27</div>
+      <div class="log-text">Demo CTO gap escalated: 0 campaigns covering 44% of MQL target. Still unresolved.</div>
+    </div>
+  </div>
+</div>
+
+<hr class="divider">
+
+<!-- ====== CHARTS ====== -->
+<div class="section">
+  <div class="section-title">Spend Allocation</div>
+  <div class="chart-wrap">
+    <div class="chart-title">Ad spend by experiment (green = MQLs, amber = leads only, red = zero leads)</div>
+    <div class="chart-inner"><canvas id="spendChart"></canvas></div>
+  </div>
+</div>
+
+<div class="section">
+  <div class="section-title">MQL Progress vs Target Pace</div>
+  <div class="chart-wrap">
+    <div class="chart-title">Cumulative MQLs by week vs linear target (18 MQLs by Apr 30)</div>
+    <div class="chart-inner"><canvas id="mqlTrendChart"></canvas></div>
+  </div>
+</div>
+
+<!-- ====== FOOTER ====== -->
+<div class="footer">
+  Generated by Ambient.ai Performance Marketing Agent · 2026-04-06T10:30:00-07:00
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
+<script>
+const isDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+const txtColor = isDark ? '#a0a09a' : '#6b6b6b';
+const gridColor = isDark ? 'rgba(255,255,255,0.06)' : 'rgba(0,0,0,0.06)';
+
+// Spend Allocation Chart
+const spendData = {"labels":["Blueprint Campus Police","Five Tenets SFDC","Five Tenets Higher Ed","Google EDU-KW","Google Enterprise KW","Pulsar WP sq","Agentic Ops Higher Ed","BTB Webinar SFDC","Agentic WP Campus Police","Blueprint WP Ent v6","Agentic Ops Ent rect","BTB Webinar Ent sq","Pulsar WP rect"],"values":[1473,1195,1067,880,830,738,710,602,591,570,402,89,63],"colors":["#1a8a5c","#b07317","#b07317","#c93a3a","#c93a3a","#b07317","#1a8a5c","#b07317","#1a8a5c","#1a8a5c","#c93a3a","#c93a3a","#2563a8"]};
+new Chart(document.getElementById('spendChart'), {
+  type: 'bar',
+  data: {
+    labels: spendData.labels,
+    datasets: [{
+      label: 'Spend',
+      data: spendData.values,
+      backgroundColor: spendData.colors,
+      borderRadius: 6,
+      barThickness: 18
+    }]
+  },
+  options: {
+    indexAxis: 'y',
+    responsive: true,
+    maintainAspectRatio: false,
+    plugins: { legend: { display: false } },
+    scales: {
+      x: { grid: { color: gridColor }, ticks: { color: txtColor, font: { size: 11, family: 'DM Sans' }, callback: v => '$' + v.toLocaleString() } },
+      y: { grid: { display: false }, ticks: { color: txtColor, font: { size: 11, family: 'DM Sans' } } }
+    }
+  }
+});
+
+// MQL Trend Chart
+const mqlData = {"weeks":["Feb 1","Feb 15","Mar 1","Mar 15","Mar 22","Mar 29","Apr 6"],"actual":[0,0,1,4,6,8,9],"target":[0,2.8,5.7,8.5,9.9,11.3,13.0]};
+new Chart(document.getElementById('mqlTrendChart'), {
+  type: 'line',
+  data: {
+    labels: mqlData.weeks,
+    datasets: [
+      {
+        label: 'Actual MQLs',
+        data: mqlData.actual,
+        borderColor: '#1a8a5c',
+        backgroundColor: 'rgba(26,138,92,0.1)',
+        fill: true,
+        tension: 0.3,
+        pointRadius: 4,
+        pointBackgroundColor: '#1a8a5c'
+      },
+      {
+        label: 'Target Pace',
+        data: mqlData.target,
+        borderColor: '#9a9a9a',
+        borderDash: [6, 4],
+        fill: false,
+        tension: 0,
+        pointRadius: 0
+      }
+    ]
+  },
+  options: {
+    responsive: true,
+    maintainAspectRatio: false,
+    plugins: {
+      legend: { position: 'bottom', labels: { color: txtColor, font: { size: 11, family: 'DM Sans' } } }
+    },
+    scales: {
+      x: { grid: { color: gridColor }, ticks: { color: txtColor, font: { size: 11, family: 'DM Sans' } } },
+      y: { grid: { color: gridColor }, ticks: { color: txtColor, font: { size: 11, family: 'DM Sans' } }, beginAtZero: true }
+    }
+  }
+});
+</script>
+
+</body>
+</html>
