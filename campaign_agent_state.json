@@ -1,6 +1,6 @@
 {
   "version": "1.0",
-  "lastUpdated": "2026-04-06T10:30:00-07:00",
+  "lastUpdated": "2026-04-09T09:00:00-07:00",
   "goals": {
     "quarter": "Q1_FY27",
     "dateRange": {
@@ -517,6 +517,24 @@
   ],
   "decisionLog": [
     {
+      "date": "2026-04-09",
+      "action": "Anomaly check run — Apr 6–9 (4 days)",
+      "reason": "5 anomalies detected. Google LP failure day 16 ($135 this week, 0 leads). Credit balance DENIED day 16. Blueprint WP Campus Police $668 CPL (+94% WoW), ACTIVE_WITHOUT_SPEND. BTB Webinar Higher Ed v2 $305 spend 0 leads (threshold breach). Five Tenets SFDC Higher Ed $1,234 spend 0 MQLs (35 days). QTD: 9/18 MQLs (50%) at 76% elapsed — BEHIND, projected EOQ ~12.",
+      "outcome": "posted to Slack"
+    },
+    {
+      "date": "2026-04-09",
+      "action": "Pulsar WP sq (1793272) and BTB Webinar SFDC Higher Ed (1793293) confirmed paused",
+      "reason": "Watch list items from prior reports actioned. Paused status confirmed via API.",
+      "outcome": "done"
+    },
+    {
+      "date": "2026-04-09",
+      "action": "New experiment 1793291 detected — BTB Webinar Higher Ed Fac v1",
+      "reason": "Not previously tracked. $163 spend, 0 leads. Classified as webinar_on_demand_view.",
+      "outcome": "added to tracking"
+    },
+    {
       "date": "2026-04-06",
       "action": "30-day lookback report generated — Mar 7–Apr 6",
       "reason": "QTD: 9/18 MQLs (50%) at 73% of quarter. BEHIND. LinkedIn hit 9/9 target (+1 from Agentic Ops Higher Ed). Google still 0/9. Projected EOQ: ~12 MQLs.",
@@ -578,6 +596,22 @@
     }
   ],
   "alertHistory": [
+    {
+      "id": "blueprint-campus-police-cpl-spike-2026-04-09",
+      "date": "2026-04-09",
+      "type": "high_cpl",
+      "entity": "1793299",
+      "message": "Blueprint WP → Campus Police: $668 CPL this week (+94% vs $344 portfolio avg). ACTIVE_WITHOUT_SPEND status — burned daily budget.",
+      "acknowledged": false
+    },
+    {
+      "id": "btb-webinar-higher-ed-v2-zero-leads-2026-04-09",
+      "date": "2026-04-09",
+      "type": "zero_lead_spend",
+      "entity": "1793295",
+      "message": "BTB Webinar Higher Ed v2: $305 spend, 0 leads over 24 days. Over $300 zero-lead threshold.",
+      "acknowledged": false
+    },
     {
       "id": "linkedin-target-hit-2026-04-06",
       "date": "2026-04-06",
@@ -646,21 +680,22 @@
         "channel": "LINKEDIN",
         "status": "ActiveWithoutSpend",
         "cta": "white_paper_download",
-        "lifetimeSpend": 1473,
-        "lifetimeLeads": 6,
+        "lifetimeSpend": 2035,
+        "lifetimeLeads": 7,
         "lifetimeMQLs": 2,
-        "lastWeekCPL": 245
+        "lastWeekCPL": 668
       },
       "1793272": {
         "name": "Pulsar WP → Enterprise sq",
         "firstSeen": "2026-03-24",
         "channel": "LINKEDIN",
-        "status": "Active",
+        "status": "Paused",
         "cta": "white_paper_download",
-        "lifetimeSpend": 738,
+        "lifetimeSpend": 762,
         "lifetimeLeads": 1,
         "lifetimeMQLs": 0,
-        "lastWeekCPL": 738
+        "lastWeekCPL": null,
+        "pausedDate": "2026-04-07"
       },
       "1793310": {
         "name": "Agentic Ops WP → Higher Ed Facilities",
@@ -668,10 +703,10 @@
         "channel": "LINKEDIN",
         "status": "Active",
         "cta": "white_paper_download",
-        "lifetimeSpend": 710,
-        "lifetimeLeads": 3,
+        "lifetimeSpend": 775,
+        "lifetimeLeads": 4,
         "lifetimeMQLs": 2,
-        "lastWeekCPL": 237
+        "lastWeekCPL": 113
       },
       "1785667": {
         "name": "Agentic WP → Campus Police",
@@ -740,12 +775,12 @@
         "lastWeekCPL": null
       },
       "1793295": {
-        "name": "BTB Webinar → Enterprise v6 v2",
+        "name": "BTB Webinar → Higher Ed Fac v2",
         "firstSeen": "2026-03-24",
         "channel": "LINKEDIN",
         "status": "Active",
         "cta": "webinar_on_demand_view",
-        "lifetimeSpend": 109,
+        "lifetimeSpend": 305,
         "lifetimeLeads": 0,
         "lifetimeMQLs": 0,
         "lastWeekCPL": null
@@ -754,12 +789,13 @@
         "name": "BTB Webinar → SFDC Higher Ed",
         "firstSeen": "2026-03-24",
         "channel": "LINKEDIN",
-        "status": "Active",
+        "status": "Paused",
         "cta": "webinar_on_demand_view",
         "lifetimeSpend": 602,
         "lifetimeLeads": 1,
         "lifetimeMQLs": 0,
-        "lastWeekCPL": 602
+        "lastWeekCPL": null,
+        "pausedDate": "2026-04-07"
       },
       "1793239": {
         "name": "BTB Webinar → Enterprise sq",
@@ -767,7 +803,18 @@
         "channel": "LINKEDIN",
         "status": "Active",
         "cta": "webinar_on_demand_view",
-        "lifetimeSpend": 89,
+        "lifetimeSpend": 158,
+        "lifetimeLeads": 0,
+        "lifetimeMQLs": 0,
+        "lastWeekCPL": null
+      },
+      "1793291": {
+        "name": "BTB Webinar → Higher Ed Fac v1",
+        "firstSeen": "2026-04-09",
+        "channel": "LINKEDIN",
+        "status": "Active",
+        "cta": "webinar_on_demand_view",
+        "lifetimeSpend": 163,
         "lifetimeLeads": 0,
         "lifetimeMQLs": 0,
         "lastWeekCPL": null
