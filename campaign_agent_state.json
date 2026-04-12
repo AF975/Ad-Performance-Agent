@@ -540,7 +540,6 @@
         { "name": "Demo CTO Gap", "issue": "0 campaigns running, 0/8 MQL target, 19 days left" },
         { "name": "BTB Webinar (3 experiments)", "issue": "$940 combined QTD spend, 0 leads, 0 MQLs" },
         { "name": "Five Tenets SFDC (1788223)", "issue": "$1,296 spend, 3 leads, 0 MQLs in 37 days" },
-        { "name": "Credit Balance DENIED", "issue": "0 credits since Mar 24, 18 days unresolved" }
       ]
     }
   ],
@@ -734,8 +733,8 @@
       "date": "2026-04-06",
       "type": "credit_balance",
       "entity": "pixel_ai_credits",
-      "message": "Credit balance DENIED, 0 remaining. Unresolved since Mar 24 (now 13 days).",
-      "acknowledged": false
+      "message": "Credit balance DENIED — known Metadata.io bug, not a real issue. Suppressed.",
+      "acknowledged": true
     }
   ],
   "experimentTracking": {
@@ -1107,6 +1106,9 @@
       "zeroLeadSpendThreshold": 300,
       "spendDropPercent": 50,
       "creditBalanceLowPercent": 20
-    }
+    },
+    "suppressedAlerts": [
+      "credit_balance"
+    ]
   }
 }
