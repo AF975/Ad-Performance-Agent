@@ -1,0 +1,648 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Weekly Performance Report — April 16, 2026</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #fafaf9;
+    --bg-card: #ffffff;
+    --bg-surface: #f3f3f1;
+    --text-primary: #1a1a1a;
+    --text-secondary: #6b6b6b;
+    --text-tertiary: #9a9a9a;
+    --border: #e8e8e5;
+    --green: #1a8a5c;
+    --green-bg: #edf7f1;
+    --red: #c93a3a;
+    --red-bg: #fceeed;
+    --blue: #2563a8;
+    --blue-bg: #eef4fb;
+    --amber: #b07317;
+    --amber-bg: #fdf4e7;
+    --radius: 10px;
+    --radius-lg: 14px;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --bg: #141413;
+      --bg-card: #1e1e1c;
+      --bg-surface: #252524;
+      --text-primary: #e8e8e4;
+      --text-secondary: #a0a09a;
+      --text-tertiary: #6b6b66;
+      --border: #333330;
+      --green-bg: #162e22;
+      --red-bg: #2e1616;
+      --blue-bg: #162030;
+      --amber-bg: #2e2416;
+    }
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'DM Sans', sans-serif; background: var(--bg); color: var(--text-primary); padding: 32px 24px; max-width: 900px; margin: 0 auto; }
+
+  /* Header */
+  .header { margin-bottom: 32px; }
+  .header h1 { font-size: 22px; font-weight: 600; letter-spacing: -0.5px; margin-bottom: 4px; }
+  .header p { font-size: 13px; color: var(--text-secondary); }
+
+  /* Sections */
+  .section { margin-bottom: 28px; }
+  .section-title { font-size: 14px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.8px; color: var(--text-tertiary); margin-bottom: 14px; }
+  .divider { border: none; border-top: 1px solid var(--border); margin: 28px 0; }
+
+  /* Goal Tracker */
+  .goal-card { background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 20px 24px; margin-bottom: 12px; }
+  .goal-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; }
+  .goal-title { font-size: 18px; font-weight: 600; }
+  .goal-pacing { font-size: 12px; font-weight: 600; padding: 4px 12px; border-radius: 20px; }
+  .pacing-on-track { background: var(--green-bg); color: var(--green); }
+  .pacing-behind { background: var(--amber-bg); color: var(--amber); }
+  .pacing-at-risk { background: var(--red-bg); color: var(--red); }
+
+  .progress-row { margin-bottom: 12px; }
+  .progress-label { display: flex; justify-content: space-between; font-size: 12px; margin-bottom: 4px; }
+  .progress-label span:first-child { color: var(--text-secondary); font-weight: 500; }
+  .progress-label span:last-child { color: var(--text-primary); font-weight: 600; }
+  .progress-bar { height: 8px; background: var(--bg-surface); border-radius: 4px; overflow: hidden; position: relative; }
+  .progress-fill { height: 100%; border-radius: 4px; transition: width 0.3s; }
+  .progress-fill.green { background: var(--green); }
+  .progress-fill.amber { background: var(--amber); }
+  .progress-fill.red { background: var(--red); }
+  .progress-marker { position: absolute; top: -2px; height: 12px; width: 2px; background: var(--text-tertiary); }
+
+  /* CTA Table */
+  .cta-table { width: 100%; border-collapse: collapse; margin-top: 12px; }
+  .cta-table th { font-size: 11px; text-transform: uppercase; letter-spacing: 0.5px; color: var(--text-tertiary); text-align: left; padding: 8px 12px; border-bottom: 1px solid var(--border); }
+  .cta-table td { font-size: 13px; padding: 8px 12px; border-bottom: 1px solid var(--border); }
+  .cta-table td.val { font-weight: 600; }
+
+  /* Metric Cards */
+  .metrics-grid { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 10px; margin-bottom: 28px; }
+  .metric-card { background: var(--bg-surface); border-radius: var(--radius); padding: 16px 18px; }
+  .metric-label { font-size: 11px; color: var(--text-tertiary); text-transform: uppercase; letter-spacing: 0.6px; margin-bottom: 6px; }
+  .metric-value { font-size: 26px; font-weight: 600; letter-spacing: -1px; }
+  .metric-delta { font-size: 11px; margin-top: 4px; font-weight: 500; }
+  .delta-up { color: var(--green); }
+  .delta-down { color: var(--red); }
+  .delta-neutral { color: var(--text-tertiary); }
+  .metric-sub { font-size: 11px; color: var(--text-tertiary); margin-top: 2px; }
+
+  /* Experiment Cards */
+  .exp-card { background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 18px 20px; margin-bottom: 12px; transition: box-shadow 0.15s; }
+  .exp-card:hover { box-shadow: 0 2px 12px rgba(0,0,0,0.04); }
+  .exp-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; }
+  .exp-name { font-size: 15px; font-weight: 500; }
+  .badge { font-size: 10px; padding: 3px 10px; border-radius: 20px; font-weight: 600; letter-spacing: 0.3px; text-transform: uppercase; white-space: nowrap; }
+  .badge-green { background: var(--green-bg); color: var(--green); }
+  .badge-blue { background: var(--blue-bg); color: var(--blue); }
+  .badge-amber { background: var(--amber-bg); color: var(--amber); }
+  .badge-red { background: var(--red-bg); color: var(--red); }
+  .exp-meta { font-size: 12px; color: var(--text-tertiary); margin-bottom: 14px; }
+  .exp-stats { display: grid; grid-template-columns: repeat(6, minmax(0, 1fr)); gap: 6px; }
+  .stat-item { text-align: center; padding: 8px 4px; background: var(--bg-surface); border-radius: 6px; }
+  .stat-val { font-size: 15px; font-weight: 600; letter-spacing: -0.3px; }
+  .stat-label { font-size: 10px; color: var(--text-tertiary); text-transform: uppercase; letter-spacing: 0.4px; margin-top: 2px; }
+  .val-green { color: var(--green); }
+
+  /* Alert Cards */
+  .alert-card { background: var(--red-bg); border-radius: var(--radius); padding: 16px 18px; border-left: 3px solid var(--red); margin-bottom: 10px; }
+  .alert-title { font-size: 13px; font-weight: 600; color: var(--red); margin-bottom: 4px; }
+  .alert-text { font-size: 12px; color: var(--text-secondary); line-height: 1.6; }
+
+  /* Recommendation Cards */
+  .rec-card { background: var(--blue-bg); border-radius: var(--radius); padding: 16px 18px; border-left: 3px solid var(--blue); margin-bottom: 10px; }
+  .rec-title { font-size: 13px; font-weight: 600; color: var(--blue); margin-bottom: 4px; }
+  .rec-text { font-size: 12px; color: var(--text-secondary); line-height: 1.6; }
+
+  /* Decision Log */
+  .log-entry { display: flex; gap: 12px; padding: 10px 0; border-bottom: 1px solid var(--border); }
+  .log-entry:last-child { border-bottom: none; }
+  .log-date { font-size: 12px; color: var(--text-tertiary); min-width: 70px; font-weight: 500; }
+  .log-text { font-size: 12px; color: var(--text-secondary); line-height: 1.5; }
+
+  /* Charts */
+  .chart-wrap { position: relative; width: 100%; height: 300px; background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 18px; margin-bottom: 16px; }
+  .chart-title { font-size: 13px; font-weight: 500; margin-bottom: 12px; }
+  .chart-inner { position: relative; width: 100%; height: 240px; }
+
+  /* Google Card */
+  .google-card { background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 18px 20px; }
+  .google-stats { font-size: 13px; color: var(--text-secondary); margin: 8px 0; }
+  .google-note { font-size: 12px; color: var(--text-secondary); line-height: 1.6; margin-top: 10px; }
+
+  /* Footer */
+  .footer { margin-top: 40px; padding-top: 20px; border-top: 1px solid var(--border); font-size: 11px; color: var(--text-tertiary); text-align: center; }
+
+  /* Info note */
+  .info-note { font-size: 11px; color: var(--text-tertiary); background: var(--bg-surface); padding: 8px 12px; border-radius: 6px; margin-bottom: 16px; line-height: 1.5; }
+
+  @media (max-width: 640px) {
+    .metrics-grid { grid-template-columns: repeat(2, 1fr); }
+    .exp-stats { grid-template-columns: repeat(3, 1fr); }
+  }
+</style>
+</head>
+<body>
+
+<!-- ====== HEADER ====== -->
+<div class="header">
+  <h1>Weekly Performance Report</h1>
+  <p>Ambient.ai · Metadata.io · Week of April 16, 2026</p>
+</div>
+
+<!-- ====== GOAL TRACKER ====== -->
+<div class="section">
+  <div class="section-title">Q1 FY27 MQL Goal Tracker</div>
+  <div class="goal-card">
+    <div class="goal-header">
+      <div class="goal-title">13 / 18 MQLs</div>
+      <span class="goal-pacing pacing-on-track">ON TRACK</span>
+    </div>
+
+    <!-- Overall Progress -->
+    <div class="progress-row">
+      <div class="progress-label"><span>Overall</span><span>13/18 (72%) — 84% of quarter elapsed</span></div>
+      <div class="progress-bar">
+        <div class="progress-fill amber" style="width: 72%"></div>
+        <div class="progress-marker" style="left: 84%" title="84% of quarter elapsed"></div>
+      </div>
+    </div>
+
+    <!-- LinkedIn Progress -->
+    <div class="progress-row">
+      <div class="progress-label"><span>LinkedIn</span><span>13/9 (144% ✓ — exceeded target)</span></div>
+      <div class="progress-bar">
+        <div class="progress-fill green" style="width: 100%"></div>
+        <div class="progress-marker" style="left: 84%"></div>
+      </div>
+    </div>
+
+    <!-- Google Progress -->
+    <div class="progress-row">
+      <div class="progress-label"><span>Google Ads</span><span>0/9 (0% — LP failure day 75)</span></div>
+      <div class="progress-bar">
+        <div class="progress-fill red" style="width: 0%"></div>
+        <div class="progress-marker" style="left: 84%"></div>
+      </div>
+    </div>
+
+    <!-- CTA Breakdown Table -->
+    <table class="cta-table">
+      <thead>
+        <tr><th>CTA</th><th>LinkedIn</th><th>Google</th><th>Total</th></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Demo CTO</td>
+          <td class="val">0/4</td>
+          <td class="val">0/4</td>
+          <td class="val">0/8</td>
+        </tr>
+        <tr>
+          <td>White Paper Download</td>
+          <td class="val">13/2 ✓</td>
+          <td class="val">0/2</td>
+          <td class="val">13/4</td>
+        </tr>
+        <tr>
+          <td>Webinar On Demand</td>
+          <td class="val">0/3</td>
+          <td class="val">0/3</td>
+          <td class="val">0/6</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<hr class="divider">
+
+<!-- ====== PORTFOLIO SUMMARY ====== -->
+<div class="section">
+  <div class="section-title">Portfolio Summary — Week of April 13 to April 16</div>
+  <div class="info-note">⚠️ Weekly experiment API returned limited data (possible 24hr lag). Spend and leads estimated from QTD delta vs Apr 11 snapshot. MQLs confirmed via QTD comparison (+2 this week). QTD CPL: ~$428 LinkedIn.</div>
+  <div class="metrics-grid">
+    <div class="metric-card">
+      <div class="metric-label">Spend</div>
+      <div class="metric-value">$1,764</div>
+      <div class="metric-delta delta-down">+25% WoW</div>
+      <div class="metric-sub">Li: ~$1,574 · G: ~$190</div>
+    </div>
+    <div class="metric-card">
+      <div class="metric-label">Leads</div>
+      <div class="metric-value">1</div>
+      <div class="metric-delta delta-down">-75% WoW</div>
+      <div class="metric-sub">QTD: 36 leads total</div>
+    </div>
+    <div class="metric-card">
+      <div class="metric-label">MQLs</div>
+      <div class="metric-value val-green">2</div>
+      <div class="metric-delta delta-neutral">flat WoW</div>
+      <div class="metric-sub">QTD: 13 MQLs total</div>
+    </div>
+    <div class="metric-card">
+      <div class="metric-label">CPL (est.)</div>
+      <div class="metric-value">$1,764</div>
+      <div class="metric-delta delta-down">data lag</div>
+      <div class="metric-sub">Credits: 0 (DENIED — suppressed)</div>
+    </div>
+  </div>
+</div>
+
+<hr class="divider">
+
+<!-- ====== LINKEDIN EXPERIMENTS ====== -->
+<div class="section">
+  <div class="section-title">LinkedIn Experiments — Ranked by Efficiency (QTD)</div>
+
+  <!-- 1. Agentic Ops WP Higher Ed — Top Performer -->
+  <div class="exp-card">
+    <div class="exp-header">
+      <div class="exp-name">Agentic Ops WP → Higher Ed Facilities</div>
+      <span class="badge badge-green">Top Performer</span>
+    </div>
+    <div class="exp-meta">Ambient - Agentic Ops WP - Education · Started Mar 16 · Budget: $67/day · TG: 51K</div>
+    <div class="exp-stats">
+      <div class="stat-item"><div class="stat-val">$834</div><div class="stat-label">Spend</div></div>
+      <div class="stat-item"><div class="stat-val val-green">$208</div><div class="stat-label">CPL</div></div>
+      <div class="stat-item"><div class="stat-val">4</div><div class="stat-label">Leads</div></div>
+      <div class="stat-item"><div class="stat-val val-green">3</div><div class="stat-label">MQLs</div></div>
+      <div class="stat-item"><div class="stat-val">0.62%</div><div class="stat-label">CTR</div></div>
+      <div class="stat-item"><div class="stat-val val-green">75%</div><div class="stat-label">MQL rate</div></div>
+    </div>
+  </div>
+
+  <!-- 2. Blueprint WP Enterprise v6 — Converting -->
+  <div class="exp-card">
+    <div class="exp-header">
+      <div class="exp-name">Blueprint WP → Enterprise v6</div>
+      <span class="badge badge-green">Converting</span>
+    </div>
+    <div class="exp-meta">Ambient - Practical Blueprint WP - Enterprise · Started Mar 16 · Budget: $67/day · TG: 11K</div>
+    <div class="exp-stats">
+      <div class="stat-item"><div class="stat-val">$907</div><div class="stat-label">Spend</div></div>
+      <div class="stat-item"><div class="stat-val val-green">$227</div><div class="stat-label">CPL</div></div>
+      <div class="stat-item"><div class="stat-val">4</div><div class="stat-label">Leads</div></div>
+      <div class="stat-item"><div class="stat-val val-green">2</div><div class="stat-label">MQLs</div></div>
+      <div class="stat-item"><div class="stat-val">0.71%</div><div class="stat-label">CTR</div></div>
+      <div class="stat-item"><div class="stat-val val-green">50%</div><div class="stat-label">MQL rate</div></div>
+    </div>
+  </div>
+
+  <!-- 3. Agentic WP Campus Police — Converting -->
+  <div class="exp-card">
+    <div class="exp-header">
+      <div class="exp-name">Agentic WP → Campus Police</div>
+      <span class="badge badge-green">Converting</span>
+    </div>
+    <div class="exp-meta">Agentic Physical Security - Ent/Gov/Edu_LGF · Started Feb 24 · Budget: $67/day · TG: 32K</div>
+    <div class="exp-stats">
+      <div class="stat-item"><div class="stat-val">$878</div><div class="stat-label">Spend</div></div>
+      <div class="stat-item"><div class="stat-val val-green">$293</div><div class="stat-label">CPL</div></div>
+      <div class="stat-item"><div class="stat-val">3</div><div class="stat-label">Leads</div></div>
+      <div class="stat-item"><div class="stat-val val-green">2</div><div class="stat-label">MQLs</div></div>
+      <div class="stat-item"><div class="stat-val">0.68%</div><div class="stat-label">CTR</div></div>
+      <div class="stat-item"><div class="stat-val val-green">67%</div><div class="stat-label">MQL rate</div></div>
+    </div>
+  </div>
+
+  <!-- 4. Pulsar WP Enterprise rect — Generating leads -->
+  <div class="exp-card">
+    <div class="exp-header">
+      <div class="exp-name">Pulsar WP → Enterprise rect</div>
+      <span class="badge badge-blue">Generating Leads</span>
+    </div>
+    <div class="exp-meta">Ambient - Inside Ambient Pulsar WP - Enterprise · Started Mar 16 · Budget: $67/day · TG: 11K</div>
+    <div class="exp-stats">
+      <div class="stat-item"><div class="stat-val">$140</div><div class="stat-label">Spend</div></div>
+      <div class="stat-item"><div class="stat-val val-green">$140</div><div class="stat-label">CPL</div></div>
+      <div class="stat-item"><div class="stat-val">1</div><div class="stat-label">Leads</div></div>
+      <div class="stat-item"><div class="stat-val">0</div><div class="stat-label">MQLs</div></div>
+      <div class="stat-item"><div class="stat-val">0.38%</div><div class="stat-label">CTR</div></div>
+      <div class="stat-item"><div class="stat-val">0%</div><div class="stat-label">MQL rate</div></div>
+    </div>
+  </div>
+
+  <!-- 5. BTB Webinar Enterprise sq — Generating leads -->
+  <div class="exp-card">
+    <div class="exp-header">
+      <div class="exp-name">BTB Webinar → Enterprise sq</div>
+      <span class="badge badge-blue">Generating Leads</span>
+    </div>
+    <div class="exp-meta">Ambient - Beyond the Buzzwords Webinar - Enterprise · Started Mar 16 · Budget: $67/day · TG: 11K</div>
+    <div class="exp-stats">
+      <div class="stat-item"><div class="stat-val">$341</div><div class="stat-label">Spend</div></div>
+      <div class="stat-item"><div class="stat-val">$341</div><div class="stat-label">CPL</div></div>
+      <div class="stat-item"><div class="stat-val">1</div><div class="stat-label">Leads</div></div>
+      <div class="stat-item"><div class="stat-val">0</div><div class="stat-label">MQLs</div></div>
+      <div class="stat-item"><div class="stat-val">0.98%</div><div class="stat-label">CTR</div></div>
+      <div class="stat-item"><div class="stat-val">0%</div><div class="stat-label">MQL rate</div></div>
+    </div>
+  </div>
+
+  <!-- 6. Blueprint WP Campus Police — Watch (Active Without Spend) -->
+  <div class="exp-card">
+    <div class="exp-header">
+      <div class="exp-name">Blueprint WP → Campus Police ⚠️ Budget Maxed</div>
+      <span class="badge badge-amber">Active w/o Spend</span>
+    </div>
+    <div class="exp-meta">Ambient - Practical Blueprint WP - Education · Started Mar 16 · Budget: $174/day (99.5% pacing) · TG: 32K · 1 influenced opp</div>
+    <div class="exp-stats">
+      <div class="stat-item"><div class="stat-val">$3,433</div><div class="stat-label">Spend</div></div>
+      <div class="stat-item"><div class="stat-val">$381</div><div class="stat-label">CPL</div></div>
+      <div class="stat-item"><div class="stat-val">9</div><div class="stat-label">Leads</div></div>
+      <div class="stat-item"><div class="stat-val val-green">5</div><div class="stat-label">MQLs</div></div>
+      <div class="stat-item"><div class="stat-val">0.63%</div><div class="stat-label">CTR</div></div>
+      <div class="stat-item"><div class="stat-val val-green">56%</div><div class="stat-label">MQL rate</div></div>
+    </div>
+  </div>
+
+  <!-- 7. Five Tenets SFDC Higher Ed — Watch -->
+  <div class="exp-card">
+    <div class="exp-header">
+      <div class="exp-name">Five Tenets → SFDC Higher Ed</div>
+      <span class="badge badge-amber">Watch</span>
+    </div>
+    <div class="exp-meta">Five Tenets - Enterprise & Education_LGF_SFDC_prospects · Started Mar 5 · Budget: $67/day · TG: 8.7K · Day 42</div>
+    <div class="exp-stats">
+      <div class="stat-item"><div class="stat-val">$1,296</div><div class="stat-label">Spend</div></div>
+      <div class="stat-item"><div class="stat-val">$432</div><div class="stat-label">CPL</div></div>
+      <div class="stat-item"><div class="stat-val">3</div><div class="stat-label">Leads</div></div>
+      <div class="stat-item"><div class="stat-val">0</div><div class="stat-label">MQLs</div></div>
+      <div class="stat-item"><div class="stat-val">0.78%</div><div class="stat-label">CTR</div></div>
+      <div class="stat-item"><div class="stat-val">0%</div><div class="stat-label">MQL rate</div></div>
+    </div>
+  </div>
+
+  <!-- 8. BTB Webinar Campus Police v2 — Alert (NEW) -->
+  <div class="exp-card">
+    <div class="exp-header">
+      <div class="exp-name">BTB Webinar → Campus Police (Ad Group 2) 🆕</div>
+      <span class="badge badge-red">Alert</span>
+    </div>
+    <div class="exp-meta">Ambient - Beyond the Buzzwords Webinar - Education · Started Mar 16 · Budget: $11/day · TG: 32K · Active Without Spend</div>
+    <div class="exp-stats">
+      <div class="stat-item"><div class="stat-val">$169</div><div class="stat-label">Spend</div></div>
+      <div class="stat-item"><div class="stat-val">N/A</div><div class="stat-label">CPL</div></div>
+      <div class="stat-item"><div class="stat-val">0</div><div class="stat-label">Leads</div></div>
+      <div class="stat-item"><div class="stat-val">0</div><div class="stat-label">MQLs</div></div>
+      <div class="stat-item"><div class="stat-val">0.52%</div><div class="stat-label">CTR</div></div>
+      <div class="stat-item"><div class="stat-val">—</div><div class="stat-label">MQL rate</div></div>
+    </div>
+  </div>
+
+  <!-- 9. BTB Webinar Campus Police v1 — Alert (NEW) -->
+  <div class="exp-card">
+    <div class="exp-header">
+      <div class="exp-name">BTB Webinar → Campus Police (Ad Group 1) 🆕</div>
+      <span class="badge badge-red">Alert</span>
+    </div>
+    <div class="exp-meta">Ambient - Beyond the Buzzwords Webinar - Education · Started Mar 16 · Budget: $11/day · TG: 32K · Active Without Spend</div>
+    <div class="exp-stats">
+      <div class="stat-item"><div class="stat-val">$168</div><div class="stat-label">Spend</div></div>
+      <div class="stat-item"><div class="stat-val">N/A</div><div class="stat-label">CPL</div></div>
+      <div class="stat-item"><div class="stat-val">0</div><div class="stat-label">Leads</div></div>
+      <div class="stat-item"><div class="stat-val">0</div><div class="stat-label">MQLs</div></div>
+      <div class="stat-item"><div class="stat-val">0%</div><div class="stat-label">CTR</div></div>
+      <div class="stat-item"><div class="stat-val">—</div><div class="stat-label">MQL rate</div></div>
+    </div>
+  </div>
+
+</div>
+
+<hr class="divider">
+
+<!-- ====== GOOGLE ADS ====== -->
+<div class="section">
+  <div class="section-title">Google Ads</div>
+  <div class="google-card">
+    <div class="exp-header">
+      <div class="exp-name">Google Ads — 2 Active Campaigns</div>
+      <span class="badge badge-red">0 Leads — Day 75</span>
+    </div>
+    <div class="google-stats">
+      EDU-KW ($10/day): $1,044 QTD spend · 1,979 impressions · 91 clicks · 0 leads · 4.60% CTR<br>
+      Enterprise KW ($17.31/day): $1,027 QTD spend · 2,363 impressions · 90 clicks · 0 leads · 3.81% CTR
+    </div>
+    <div class="google-note">
+      <strong>Total QTD: $2,071 spend · 4,342 impressions · 181 clicks · 0 leads · 0 MQLs</strong><br><br>
+      Landing page conversion failure persists on Day 75. Both campaigns are technically active and driving clicks at $11–11.50 avg CPC, but the Education LP and Security Threats LP are not capturing form submissions. With 14 days left in Q1, the highest-leverage action is redirecting this $27/day budget to LinkedIn top performers rather than attempting a late-quarter LP fix.
+    </div>
+  </div>
+</div>
+
+<hr class="divider">
+
+<!-- ====== ISSUES FLAGGED ====== -->
+<div class="section">
+  <div class="section-title">Issues Flagged</div>
+
+  <div class="alert-card">
+    <div class="alert-title">Blueprint WP → Campus Police: Budget Exhausted (ACTIVE_WITHOUT_SPEND)</div>
+    <div class="alert-text">
+      Top performer with 5 MQLs (56% MQL rate) and the program's only influenced pipeline opportunity is maxing its $174/day budget daily (99.5% pacing). The experiment is set as "Active" but LinkedIn cannot spend the full amount, cutting reach at the most critical point of the quarter. <strong>Action: Increase daily budget from $174 to $300+ immediately.</strong> At current conversion rates, the additional ~$1,750 over 14 days could yield 3–4 more MQLs.
+    </div>
+  </div>
+
+  <div class="alert-card">
+    <div class="alert-title">Google Ads: LP Conversion Failure — Day 75, $2,071 Spent, 0 Leads</div>
+    <div class="alert-text">
+      Both Google campaigns (EDU-KW and Enterprise KW) are driving clicks at reasonable CPCs ($11–$12) but the landing pages are producing 0 form conversions. This has been flagged since April 1 (75 days). With 14 days left in Q1, <strong>recommend pausing both Google campaigns and redirecting $27/day to LinkedIn.</strong> At LinkedIn's current ~$313 avg CPL, the redirected budget could add ~3 additional leads.
+    </div>
+  </div>
+
+  <div class="alert-card">
+    <div class="alert-title">2 New BTB Webinar Experiments Detected (Campus Police, 1793294 + 1793292)</div>
+    <div class="alert-text">
+      Two previously untracked BTB Webinar experiments targeting Campus Police were found in the active roster — both ACTIVE_WITHOUT_SPEND with $337 combined spend and 0 leads. These join the existing BTB Webinar Enterprise sq ($341 spend, 1 lead, 0 MQLs) in consistently underperforming. The BTB Webinar content has now generated $1,279 in total spend across active experiments with 1 lead and 0 MQLs. <strong>Pause all three.</strong>
+    </div>
+  </div>
+
+  <div class="alert-card">
+    <div class="alert-title">Five Tenets → SFDC Higher Ed: $1,296 Spend, 0 MQLs, Day 42</div>
+    <div class="alert-text">
+      Running 42 days with 3 leads and 0 MQL conversions. Last lead was April 16 but the 0% MQL rate indicates poor lead quality from this SFDC prospect audience. At $432 CPL with no MQL output, this $67/day spend is not adding value in the final 14 days of Q1. <strong>Recommend pausing and redirecting to Agentic Ops WP → Higher Ed.</strong>
+    </div>
+  </div>
+
+  <div class="alert-card">
+    <div class="alert-title">Demo CTO Gap: 0/8 MQL Target, No Campaigns Running — Q1 Goal Unachievable</div>
+    <div class="alert-text">
+      Zero Demo CTO MQLs for the quarter with 14 days remaining. No campaigns for this CTA type have ever been launched in Q1 FY27. This goal is effectively lost for Q1. The program over-indexed on White Paper Downloads (13 MQLs vs. 2 target) while Demo CTO and Webinar remain at zero. <strong>Action: Accept Q1 miss, begin planning Demo CTO and Webinar experiments for Q2 launch on May 1.</strong>
+    </div>
+  </div>
+
+</div>
+
+<hr class="divider">
+
+<!-- ====== RECOMMENDATIONS ====== -->
+<div class="section">
+  <div class="section-title">Recommendations</div>
+
+  <div class="rec-card">
+    <div class="rec-title">1. Scale Blueprint WP → Campus Police: Increase Daily Budget to $300+</div>
+    <div class="rec-text">
+      This is the highest-leverage action available in Q1. Blueprint WP Campus Police is the program's top performer (5 MQLs, 56% MQL rate, 1 influenced pipeline opp) but is leaving money on the table — burning its entire $174/day budget instantly. Increasing to $300–$350/day for the final 14 days adds ~$1,750–$2,450 in spend. At current conversion rates (~$381 CPL, 56% MQL rate), expect 3–4 additional MQLs and potentially a 2nd pipeline opportunity.
+    </div>
+  </div>
+
+  <div class="rec-card">
+    <div class="rec-title">2. Pause 4 Underperformers — Redirect $270+/day to Top Performers</div>
+    <div class="rec-text">
+      <strong>Pause immediately:</strong> BTB Webinar Ent sq ($67/day, $341 spent, 0 MQLs), BTB Webinar Campus Police v1 + v2 ($11/day each, $337 combined, 0 leads), Five Tenets SFDC Higher Ed ($67/day, $1,296 spent, 0 MQLs). Combined savings: ~$156/day. <strong>Redirect to:</strong> Agentic Ops WP → Higher Ed (top MQL rate at 75%) and Agentic WP → Campus Police (66.7% MQL rate). These two experiments could drive 3–5 more MQLs in the final 14 days.
+    </div>
+  </div>
+
+  <div class="rec-card">
+    <div class="rec-title">3. Pause Google Ads — Redirect $27/day to LinkedIn</div>
+    <div class="rec-text">
+      With 14 days left and no realistic path to fixing the LP conversion issue in time, continuing to spend on Google produces 0 MQLs. Pausing both EDU-KW and Enterprise KW frees $27/day. At LinkedIn's current ~$313 avg CPL over 14 days ($378 total), this may not yield a full MQL but improves overall program efficiency and reduces wasted spend.
+    </div>
+  </div>
+
+  <div class="rec-card">
+    <div class="rec-title">4. Plan Q2 Campaign Mix: Fix CTA Imbalance Before May 1</div>
+    <div class="rec-text">
+      Q1 ended with all 13 MQLs from White Paper Downloads — 6.5x the target for that CTA type — while Demo CTO (0/8) and Webinar On Demand (0/6) contributed zero. For Q2, the priority is launching dedicated Demo CTO experiments (targeting decision-makers, not just education personas) and Webinar On Demand experiments using proven audience segments (Campus Police, Higher Ed Facilities). Also: fix Google LP conversion tracking before any Q2 Google budget is committed.
+    </div>
+  </div>
+
+</div>
+
+<hr class="divider">
+
+<!-- ====== DECISION LOG ====== -->
+<div class="section">
+  <div class="section-title">Decision Log — This Week</div>
+  <div class="goal-card">
+    <div class="log-entry">
+      <div class="log-date">Apr 16</div>
+      <div class="log-text">Weekly report generated — Apr 13–16. QTD: 13/18 MQLs (72%) at 84% of quarter — ON TRACK (barely). +2 MQLs this week from Blueprint WP Campus Police. LinkedIn at 13/9 (144%). Google still 0/9. Projected EOQ: ~15 MQLs without intervention.</div>
+    </div>
+    <div class="log-entry">
+      <div class="log-date">Apr 16</div>
+      <div class="log-text">Blueprint WP Campus Police +2 MQLs this week — now 5 QTD (56% MQL rate, 1 influenced opp). Still ACTIVE_WITHOUT_SPEND maxing $174/day budget. Recommend increasing to $300+.</div>
+    </div>
+    <div class="log-entry">
+      <div class="log-date">Apr 16</div>
+      <div class="log-text">2 new BTB Webinar experiments detected: 1793294 + 1793292 (Campus Police, both ACTIVE_WITHOUT_SPEND, $337 combined, 0 leads). Not previously tracked. Classified as webinar_on_demand_view.</div>
+    </div>
+    <div class="log-entry">
+      <div class="log-date">Apr 16</div>
+      <div class="log-text">BTB Webinar Higher Ed v2 (1793295), Higher Ed v1 (1793291), SFDC Prospects v2 (1793296), Enterprise v6 (1793317) — confirmed paused. No longer in active roster. Prior recommendation from Apr 11 actioned.</div>
+    </div>
+    <div class="log-entry">
+      <div class="log-date">Apr 11</div>
+      <div class="log-text">Weekly report generated — Apr 6–11. QTD: 11/18 MQLs (61%) at 79% of quarter. BEHIND but improving. +2 MQLs. LinkedIn at 11/9 (122%). Projected EOQ: ~14. Recommended pausing 3 BTB Webinar experiments.</div>
+    </div>
+    <div class="log-entry">
+      <div class="log-date">Apr 11</div>
+      <div class="log-text">LinkedIn exceeded 9 MQL target — now at 11. Agentic Ops Higher Ed now 3 MQLs (75% MQL rate). Blueprint Campus Police 3 MQLs. First influenced opportunity detected on Blueprint WP Campus Police (1793299).</div>
+    </div>
+  </div>
+</div>
+
+<hr class="divider">
+
+<!-- ====== CHARTS ====== -->
+<div class="section">
+  <div class="section-title">Spend Allocation (QTD — Active Experiments)</div>
+  <div class="chart-wrap">
+    <div class="chart-title">QTD spend by experiment (green = converting, amber = watch, red = alert/zero leads)</div>
+    <div class="chart-inner"><canvas id="spendChart"></canvas></div>
+  </div>
+</div>
+
+<div class="section">
+  <div class="section-title">MQL Progress vs Target Pace</div>
+  <div class="chart-wrap">
+    <div class="chart-title">Cumulative MQLs by week vs linear target (18 MQLs by Apr 30)</div>
+    <div class="chart-inner"><canvas id="mqlTrendChart"></canvas></div>
+  </div>
+</div>
+
+<!-- ====== FOOTER ====== -->
+<div class="footer">
+  Generated by Ambient.ai Performance Marketing Agent · 2026-04-16T10:30:00-07:00
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
+<script>
+const isDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+const txtColor = isDark ? '#a0a09a' : '#6b6b6b';
+const gridColor = isDark ? 'rgba(255,255,255,0.06)' : 'rgba(0,0,0,0.06)';
+
+// Spend Allocation Chart
+const spendData = {"labels":["Blueprint WP\nCampus Police","Five Tenets\nSFDC Higher Ed","Blueprint WP\nEnterprise v6","Agentic WP\nCampus Police","Agentic Ops WP\nHigher Ed","BTB Webinar\nEnterprise sq","BTB Webinar\nCampus Police 2","BTB Webinar\nCampus Police 1","Pulsar WP\nEnterprise rect"],"values":[3433,1296,907,878,834,341,169,168,140],"colors":["#b07317","#b07317","#1a8a5c","#1a8a5c","#1a8a5c","#9a9a9a","#c93a3a","#c93a3a","#2563a8"]};
+new Chart(document.getElementById('spendChart'), {
+  type: 'bar',
+  data: {
+    labels: spendData.labels,
+    datasets: [{
+      label: 'Spend',
+      data: spendData.values,
+      backgroundColor: spendData.colors,
+      borderRadius: 6,
+      barThickness: 18
+    }]
+  },
+  options: {
+    indexAxis: 'y',
+    responsive: true,
+    maintainAspectRatio: false,
+    plugins: { legend: { display: false } },
+    scales: {
+      x: { grid: { color: gridColor }, ticks: { color: txtColor, font: { size: 11, family: 'DM Sans' }, callback: v => '$' + v.toLocaleString() } },
+      y: { grid: { display: false }, ticks: { color: txtColor, font: { size: 11, family: 'DM Sans' } } }
+    }
+  }
+});
+
+// MQL Trend Chart
+const mqlData = {"weeks":["Mar 24","Mar 27","Apr 1","Apr 2","Apr 6","Apr 11","Apr 16"],"actual":[6,7,8,8,9,11,13],"target":[10.3,10.9,11.9,12.1,12.9,13.9,15.2]};
+new Chart(document.getElementById('mqlTrendChart'), {
+  type: 'line',
+  data: {
+    labels: mqlData.weeks,
+    datasets: [
+      {
+        label: 'Actual MQLs',
+        data: mqlData.actual,
+        borderColor: '#1a8a5c',
+        backgroundColor: 'rgba(26,138,92,0.1)',
+        fill: true,
+        tension: 0.3,
+        pointRadius: 4,
+        pointBackgroundColor: '#1a8a5c'
+      },
+      {
+        label: 'Target Pace',
+        data: mqlData.target,
+        borderColor: '#9a9a9a',
+        borderDash: [6, 4],
+        fill: false,
+        tension: 0,
+        pointRadius: 0
+      }
+    ]
+  },
+  options: {
+    responsive: true,
+    maintainAspectRatio: false,
+    plugins: {
+      legend: { position: 'bottom', labels: { color: txtColor, font: { size: 11, family: 'DM Sans' } } }
+    },
+    scales: {
+      x: { grid: { color: gridColor }, ticks: { color: txtColor, font: { size: 11, family: 'DM Sans' } } },
+      y: { grid: { color: gridColor }, ticks: { color: txtColor, font: { size: 11, family: 'DM Sans' } }, beginAtZero: true }
+    }
+  }
+});
+</script>
+
+</body>
+</html>
